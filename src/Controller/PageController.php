@@ -11,7 +11,7 @@ class PageController extends AbstractController
     #[Route('/', name: 'app_page')]
     public function index(): Response
     {
-        return $this->render('page/calendar.html.twig', [
+        return $this->render('page/room.html.twig', [
             'controller_name' => 'PageController',
         ]);
     }
