@@ -3,24 +3,30 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
+use App\Entity\Room;
+use App\Entity\User;
 
 // les différentes entités
+use App\Entity\Status;
 use App\Entity\Address;
-use App\Entity\Equipment;
-use App\Entity\Room;
 use App\Entity\Ergonomy;
+use App\Entity\Software;
+use App\Entity\Equipment;
 use App\Entity\ImagesRoom;
 use App\Entity\Reservation;
-use App\Entity\Software;
-use App\Entity\Status;
-use App\Entity\User;
+use App\Entity\TypeEquipment;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+
+        /**
+         * Utilisation de faker pour générer des données aléatoires.
+         * https://fakerphp.github.io/formatters/text-and-paragraphs/
+         */
         $faker = Factory::create($fakerLocale = 'fr_FR');
 
         /**
@@ -41,7 +47,7 @@ class AppFixtures extends Fixture
         }
 
         //////////////
-        //création des softwares. 
+        //création des softwares. Ces derniers seront liés aux équipements de type Ordinateur
 
         $softwareNames = ['Windows', 'Linux', 'MacOS', 'Android', 'IOS', 'Word', 'Excel', 'Powerpoint', 'Outlook', 'Teams', 'Zoom', 'Photoshop', 'Illustrator', 'Indesign', 'Premiere Pro', 'After Effects', 'Final Cut Pro', 'Cubase', 'Ableton Live', 'FL Studio', 'Studio One', 'Reaper', 'Bitwig Studio'];
         $softwareObjects = [];
@@ -72,11 +78,43 @@ class AppFixtures extends Fixture
 
         /**
          * Gestion du type d'équipement.
-         * 
+         * TODO bien penser à placer l'icone dans le dossier Public/images/typeEquipment 
          */
 
          $typeEquipments=['ordinateur','tablette','imprimante','scanner','projecteur','tableau','table','chaise','tableau numérique','autre'];
+            $typeEquipmentObjects=[];
 
+            foreach($typeEquipments as $typeEquipment){
+                $typeEquipmentObject=new TypeEquipment();
+                $typeEquipmentObject->setName($typeEquipment)
+                                    ->setIcon("/images/typeEquipment/default.png"); //
+                $manager->persist($typeEquipmentObject);
+                $typeEquipmentObjects[]=$typeEquipmentObject;
+            }
+
+        //////////////
+        /**
+         * Gestion des équipements. Garder en alerte la notion de "type" d'équipement. En effet, s'il s'agit d'un ordinateur, on y associera des softwares.
+         */
+
+            $equipmentObject=[];
+
+            for($i=0;$i<50;$i++){
+                $equipmentObject=new Equipment();
+                $equipmentObject->setName($faker->word())
+                                ->setDescription($faker->text(200))
+                                ->setQuantity($faker->numberBetween(1,10))
+                    //pour le setType, récupération aléatoire d'un objet selon la taille du tableau $typeEquipmentObjects
+                                ->setType($typeEquipmentObjects[$faker->numberBetween(0,count($typeEquipmentObjects)-1)]);
+                //si l'information est un ordinateur, on lui ajoute des softwares de façon aléatoire. Pour l'exemple, pas plus de 5 logiciels par ordinateur.
+                if($equipmentObject->getType()->getName()==='ordinateur'){
+                    for($j=0;$j<$faker->numberBetween(1,5);$j++){
+                    $equipmentObject->addSoftware($softwareObjects[$faker->numberBetween(0,count($softwareObjects)-1)]);
+
+                }
+            }
+                $manager->persist($equipmentObject);
+            }
 
 
         // $product = new Product();
