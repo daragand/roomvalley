@@ -4,176 +4,97 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
+	{{ parent() }}
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
 {% endblock %}
 
 {% block body %}
-	
-<div class="container">
+
+  <div class="container">
 		<div class="row">
-			<div class="col-md-3 offset-md-9">
-				<div class="d-flex flex-column align-items-center">
-					<div id="calendar1" class="calendar" style="height: 600px; width: 500px;"></div>
+			<div class="col-6" id="descriptionroomid"></div>
+			<div class="col-6" id="calendar1">
+			<form action="" method='post' class="text-center"> {# added text-center class #}
+				
+				<label for="date_start">Reservation pour le : </label>
+				<input type="date" name="date_start" id="date_start">
+				<br>
+				<label for="date_end">Fin de Reservation pour le : </label>
+				<input type="date" name="date_end" id="date_end">
+				<br>
+				<label for="nombre_jours">Nombre de Jours Reserver</label>
+				<input type="text" name="nombre_jours" id="nombre_jours" readonly>
+				<br>
+				<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" disabled="disabled">
+				
+			</form>
+			</div>
+		</div>
+    </div>
+        
 
+     <script>
+document.addEventListener('DOMContentLoaded', function() {
+    let isStartDateSelected = false;
+    let startDate = '';
+    const calendarEl = document.getElementById('calendar1');
+    const dateStartInput = document.getElementById('date_start');
+    const dateEndInput = document.getElementById('date_end');
 
-					<div class="d-flex justify-content-center">
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reservationModal">
-							Modifier Date de Réservation
-						</button>
-					</div>
-					<div
-						id="selectedDates" class="mt-3 rounded"><!-- Les dates sélectionnées seront affichées ici -->
-					</div>
-					<div id="payButtonContainer" class="mt-3 d-flex flex-column align-items-center">
-						<div id="payMessage" class="me-3">Veuillez sélectionner vos dates</div>
+    function updateNumberOfDays() {
+        const dateStart = new Date(startDate);
+        const dateEnd = new Date(dateEndInput.value);
 
+        // Calculer la différence en millisecondes entre les dates
+        const differenceEnMilliseconds = dateEnd - dateStart;
 
-					</div>
-					<!-- debut de formulaire envoyé a la page /cart en methode POST -->
-					<form
-						id="addToCartForm" action="reservation_room" method="POST">
-						<!-- champ caché pour envoyer l'id du produit -->
-						<input type="hidden" id="product_id" name="product_id" value="">
+        // Convertir la différence de millisecondes en jours
+        const differenceEnJours = differenceEnMilliseconds / (1000 * 60 * 60 * 24);
 
-						<!-- Modal de selection pour les dates -->
-						<!-- FullCalendar n'est pas intégré au modal car s'ecrase a l'ouverture du modal -->
-							<div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true"> <div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="reservationModalLabel">Selectionner Date de Réservation</h5>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										<div class="mb-3">
-											<label for="datestart">Date de début de réservation</label>
-											<input type="date" id="datestart" class="form-control datepicker" name="datestart" placeholder="Date de début de réservation">
-										</div>
-										<div class="mb-3">
-											<label for="dateend">Date de fin de réservation</label>
-											<input type="date" id="dateend" class="form-control datepicker" name="dateend" placeholder="Date de fin de réservation">
-										</div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-										<button type="button" class="btn btn-primary" id="saveButton" data-bs-dismiss="modal">Enregistrer</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<button type="submit" id="addToCartButton" disabled>Ajouter au Panier</button>
-					</form>
+        // Afficher le nombre de jours entre les deux dates dans l'input
+        document.getElementById('nombre_jours').value = differenceEnJours + 1;
+    }
 
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        themeSystem: 'bootstrap5',
+        initialView: 'dayGridMonth',
+        timeZone: 'Europe/Paris',
+        locale: 'fr',
+        selectable: true,
+        headerToolbar: {
+            left: 'prev,next',
+            center: 'title',
+            right: 'prevYear,nextYear'
+        },
+        select: function(info) {
+            if (!isStartDateSelected) {
+                startDate = info.startStr;
+                dateStartInput.value = startDate;
+                isStartDateSelected = true;
+            } else {
+                const endDate = info.startStr;
+                dateEndInput.value = endDate;
+                isStartDateSelected = false;
+                updateNumberOfDays(); // Met à jour le nombre de jours quand date_end est sélectionné
+            }
+        }
+    });
 
-<script>
+    // Écoutez l'événement 'input' pour les champs de date
+    dateStartInput.addEventListener('input', function() {
+        startDate = dateStartInput.value;
+        updateNumberOfDays(); // Met à jour le nombre de jours dès que date_start est modifié
+    });
 
-						document.addEventListener('DOMContentLoaded', function () { // Créez un calendrier FullCalendar sur l'élément calendar1
-const calendarEl = document.getElementById('calendar1');
+    dateEndInput.addEventListener('input', function() {
+        updateNumberOfDays(); // Met à jour le nombre de jours dès que date_end est modifié
+    });
 
-
-// instanciation du calendrier avec les options
-const calendar = new FullCalendar.Calendar(calendarEl, {
-
-themeSystem: 'bootstrap5',
-initialView: 'dayGridMonth',
-timeZone: 'Europe/Paris',
-locale: 'fr',
-selectable: true,
-headerToolbar: {
-left: 'prev,next',
-center: 'title',
-right: 'prevYear,nextYear'
-},
-select: function (info) {
-const start = info.startStr;
-// Calculer la date de fin 1 jour après la date de début
-const end = new Date(info.start);
-end.setDate(end.getDate() + 1);
-const endFormatted = end.toISOString().split('T')[0];
-
-// Mettez à jour les champs de date dans le modal
-document.getElementById('datestart').value = start;
-document.getElementById('dateend').value = endFormatted;
-
-// Affichez les dates sélectionnées sous le calendrier
-const selectedDatesElement = document.getElementById('selectedDates');
-
-selectedDatesElement.innerHTML = `
-                <div>Date de début : ${start}</div>
-                <div>Date de fin : ${endFormatted}</div>
-            `;
-
-// Ajoutez le bouton "Ajouter au Panier"
-const addToCartButton = document.getElementById('addToCartButton');
-addToCartButton.innerHTML = `<button type="submit" class="btn btn-success">Ajouter au Panier</button>`;
-addToCartButton.disabled = true;
-
-// Affichez le modal
-var myModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-myModal.show();
-}
+    calendar.render();
 });
-calendar.render();
-// Gestion de l'état du bouton "Ajouter au Panier"
-const addToCartButton = document.getElementById('addToCartButton');
-const datestart = document.getElementById('datestart');
-const dateend = document.getElementById('dateend');
 
+</script>
 
-function updateButtonState() {
-
-
-if (datestart.value && dateend.value) { // Si les dates sont sélectionnées, activez le bouton et le rend vert
-if (new Date(dateend.value) > new Date(datestart.value)) {
-addToCartButton.disabled = false;
-addToCartButton.classList.remove('btn-outline-secondary');
-addToCartButton.classList.add('btn-success');
-} else { // Si la date de fin est antérieure à la date de début, désactivez le bouton et le rend gris
-addToCartButton.disabled = true;
-addToCartButton.classList.remove('btn-success');
-addToCartButton.classList.add('btn-outline-secondary');
-}
-} else { // Si les dates ne sont pas sélectionnées, désactivez le bouton et le rend gris
-addToCartButton.disabled = true;
-addToCartButton.classList.remove('btn-success');
-addToCartButton.classList.add('btn-outline-secondary');
-}
-}
-
-// Ajoutez des écouteurs d'événements pour les champs de date
-datestart.addEventListener('change', updateButtonState);
-dateend.addEventListener('change', updateButtonState);
-
-// Initialisez l'état du bouton au chargement de la page
-updateButtonState();
-
-// Récupérez le bouton "Enregistrer" dans votre modal
-const saveButton = document.getElementById('saveButton');
-
-// Ajoutez un gestionnaire d'événements au clic sur le bouton "Enregistrer"
-saveButton.addEventListener('click', function () { // Récupérez les valeurs des champs de date dans le modal
-const savedStartDate = document.getElementById('datestart').value;
-const savedEndDate = document.getElementById('dateend').value;
-
-// Mettez à jour les dates sélectionnées dans l'élément selectedDates
-const selectedDatesElement = document.getElementById('selectedDates');
-selectedDatesElement.innerHTML = `
-            <div>Date de début : ${savedStartDate}</div>
-            <div>Date de fin : ${savedEndDate}</div>
-        `;
-const productId = 123;
-document.getElementById('product_id').value = productId;
-// Fermez le modal
-var myModal = new bootstrap.Modal(document.getElementById('reservationModal'));
-myModal.hide();
-
-// Mettez à jour les dates sélectionnées dans le formulaire
-document.getElementById('addToCartForm').datestart.value = savedStartDate;
-document.getElementById('addToCartForm').dateend.value = savedEndDate;
-
-});
-});
-					</script>
 
 
 {% endblock %}
