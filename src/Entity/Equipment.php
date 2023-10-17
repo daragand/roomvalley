@@ -32,6 +32,9 @@ class Equipment
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeEquipment $type = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
@@ -126,6 +129,18 @@ class Equipment
     public function setType(?TypeEquipment $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
