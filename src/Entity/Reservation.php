@@ -26,6 +26,14 @@ class Reservation
     #[ORM\Column]
     private ?bool $isConfirmed = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $users = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Room $room = null;
+
 
 
     public function getId(): ?int
@@ -77,6 +85,30 @@ class Reservation
     public function setIsConfirmed(bool $isConfirmed): static
     {
         $this->isConfirmed = $isConfirmed;
+
+        return $this;
+    }
+
+    public function getUsers(): ?User
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?User $users): static
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    public function getRoom(): ?Room
+    {
+        return $this->room;
+    }
+
+    public function setRoom(?Room $room): static
+    {
+        $this->room = $room;
 
         return $this;
     }
