@@ -152,12 +152,12 @@ class AppFixtures extends Fixture
 
 
                     /**
-                     * Pour l'équipement, récupération d'un numéro aléatoire entre 1 et le nombre d'équipements.Placé en brut en raison d'un bug.
+                     * Pour l'équipement, récupération d'un numéro aléatoire entre 1 et le nombre d'équipements.
                      * Ce nombre permettra d'identifié l'objet equipement instancié pour l'ajouter à la salle.
                      *  
                      */
 
-                     $equipNumber = $faker->numberBetween(1,49);
+                     $equipNumber = $faker->numberBetween(1,count($equipments));
 
                     //  Instanciation de l'objet image avec le nom et numéro d'index
                      $imgRoomObject=new ImagesRoom();
@@ -173,10 +173,13 @@ class AppFixtures extends Fixture
                                 ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
                                 ->setPrice($faker->randomFloat(2, 20, 300))
                                 ->addImagesRoom($imgRoomObject)
-                                ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)])
+                                ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)]);
                 // pour l'ajout de l'équipement, on place la quantité attribué. Elle ne doit pas dépasser la quantité de l'équipement. Toutefois, il est normalement nécessaire de faire une requête pour vérifier la quantité disponible. Mais pour l'exemple, on ne le fait pas.
-                                ->addEquipment($equipments[$equipNumber],
-                                $faker->numberBetween(1,($equipments[$equipNumber]->getQuantity())));
+                    $qty=$equipments[$equipNumber]->getQuantity();
+
+
+                    $roomObject->addEquipment($equipments[$equipNumber],
+                                $faker->numberBetween(1,$qty));
                     $manager->persist($roomObject);
                     $rooms[]=$roomObject;
                 }
