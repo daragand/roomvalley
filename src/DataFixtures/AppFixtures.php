@@ -98,8 +98,10 @@ class AppFixtures extends Fixture
          */
 
             $equipmentObject=[];
-
-            for($i=0;$i<50;$i++){
+            $equipments=[];
+                
+                
+                for($i=0;$i<50;$i++){
                 $equipmentObject=new Equipment();
                 $equipmentObject->setName($faker->word())
                                 ->setDescription($faker->text(200))
@@ -114,6 +116,7 @@ class AppFixtures extends Fixture
                 }
             }
                 $manager->persist($equipmentObject);
+                $equipments[]=$equipmentObject;
             }
 
             /////////////
@@ -122,6 +125,7 @@ class AppFixtures extends Fixture
              */
 
              $addressObject=[];
+                $addresses=[];
 
              for ($i=0;$i<50;$i++){
                  $addressObject=new Address();
@@ -131,6 +135,7 @@ class AppFixtures extends Fixture
                 //choix de ne pas dépasser 8 étages pour l'étage. Si 0, cela signifie que l'équipement est au rez-de-chaussée.
                                 ->setFloor($faker->numberBetween(0,8));
                 $manager->persist($addressObject);
+                $addresses[]=$addressObject;
              }
 
                 /////////////
@@ -143,20 +148,73 @@ class AppFixtures extends Fixture
 
                 for($i=0;$i<10;$i++){
 
+
+                    /**
+                     * Pour l'équipement, récupération d'un numéro aléatoire entre 1 et le nombre d'équipements.Placé en brut en raison d'un bug.
+                     * Ce nombre permettra d'identifié l'objet equipement instancié pour l'ajouter à la salle.
+                     *  
+                     */
+
+                     $equipNumber = $faker->numberBetween(1,49);
+
+                    //  Instanciation de l'objet image avec le nom et numéro d'index
+                     $imgRoomObject=new ImagesRoom();
+                        $imgRoomObject->setPath($faker->imageUrl(640,480,"room'.$i.'",true));
+                        //on persiste l'image
+                        $manager->persist($imgRoomObject);
+
                     $roomObject=new Room();
                     $roomObject->setName($faker->word())
                                 ->setDescription($faker->text())
                                 ->setCapacity($faker->numberBetween(1,70))
-                                ->setAddress($addressObject[$faker->numberBetween(0,count($addressObject)-1)])
+                                ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)])
                                 ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
+                                ->addImagesRoom($imgRoomObject)
                                 ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)])
-                                ->addEquipment($equipmentObject[$faker->numberBetween(0,count($equipmentObject)-1)]);
+                // pour l'ajout de l'équipement, on place la quantité attribué. Elle ne doit pas dépasser la quantité de l'équipement. Toutefois, il est normalement nécessaire de faire une requête pour vérifier la quantité disponible. Mais pour l'exemple, on ne le fait pas.
+                                ->addEquipment($equipments[$equipNumber],
+                                $faker->numberBetween(1,($equipments[$equipNumber]->getQuantity())));
                     $manager->persist($roomObject);
                     $roomsObjects[]=$roomObject;
                 }
 
 
+                /////////////
 
+                /**
+                 * gestions des utilisateurs
+                 */
+
+                 $users=[];
+                 $userObject=[];
+
+                 //création d'un objet user standard
+                for($i=0;$i<10;$i++){
+                    $userObject=new User();
+                    $userObject->setEmail($faker->email())
+                                ->setFirstname($faker->firstName())
+                                ->setLastname($faker->lastName())
+                                ->setPhone($faker->phoneNumber())
+                                ->setPassword($faker->password())
+                                ->setRoles(['ROLE_USER'])
+                                ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)]);
+                    $manager->persist($userObject);
+                    $users[]=$userObject;
+                }
+
+                //création d'un objet user admin | 3 au total
+                for($i=0;$i<3;$i++){
+                $userObject=new User();
+                $userObject->setEmail($faker->email())
+                            ->setFirstname($faker->firstName())
+                            ->setLastname($faker->lastName())
+                            ->setPhone($faker->phoneNumber())
+                            ->setPassword($faker->password())
+                            ->setRoles(['ROLE_ADMIN'])
+                            ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)]);
+                $manager->persist($userObject);
+                $users[]=$userObject;
+                }
 
 
         // $product = new Product();
