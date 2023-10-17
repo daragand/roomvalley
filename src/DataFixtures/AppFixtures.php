@@ -175,15 +175,25 @@ class AppFixtures extends Fixture
                                 ->setPrice($faker->randomFloat(2, 20, 300))
                                 ->addImagesRoom($imgRoomObject)
                                 ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)]);
-                // pour l'ajout de l'équipement, on place la quantité attribué. Elle ne doit pas dépasser la quantité de l'équipement. Toutefois, il est normalement nécessaire de faire une requête pour vérifier la quantité disponible. Mais pour l'exemple, on ne le fait pas par souci de temps.
-                    
-// Création de la relation entre la salle et l'équipement
-$equipmentRoomQuantity = new EquipmentRoomQuantity();
-$equipmentRoomQuantity->setRoom($roomObject);
-$equipmentRoomQuantity->setEquipment($equipments[$equipNumber]);
-$equipmentRoomQuantity->setQuantity($faker->numberBetween(1,$equipments[$equipNumber]->getQuantity())); 
+                // pour l'ajout de l'équipement, utilisation d'une boucle pour instancier différents objet d'equipement. .
+                    $numEquipmentsToAdd=$faker->numberBetween(1,5);
 
-$manager->persist($equipmentRoomQuantity);
+                for ($j = 0; $j < $numEquipmentsToAdd; $j++) {
+                    // Pour chaque équipement à ajouter, obtenez un numéro aléatoire entre 1 et le nombre d'équipements.
+                    $equipNumber = $faker->numberBetween(1, count($equipments));
+            
+                    // Créez un nouvel enregistrement EquipmentRoomQuantity pour chaque équipement. La quantité n'est pas vérifiée avec la quantité de l'équipement.Choix pour gain de temps.
+                    $equipmentRoomQuantity = new EquipmentRoomQuantity();
+                    $equipmentRoomQuantity->setRoom($roomObject);
+                    $equipmentRoomQuantity->setEquipment($equipments[$equipNumber]);
+                    $equipmentRoomQuantity->setQuantity($faker->numberBetween(1, $equipments[$equipNumber]->getQuantity()));
+            
+
+                   // Ajoutez l'enregistrement EquipmentRoomQuantity à la salle
+                        $roomObject->addEquipmentRoomQuantity($equipmentRoomQuantity);
+                        $manager->persist($equipmentRoomQuantity);
+    }
+    //finalisation de l'instanciation de la salle
 
                     $roomObject->addEquipmentRoomQuantity($equipmentRoomQuantity);
                     $manager->persist($roomObject);
