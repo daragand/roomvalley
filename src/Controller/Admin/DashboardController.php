@@ -47,7 +47,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réservations', 'fa-solid fa-user-tie', Reservation::class);
         yield MenuItem::linkToCrud('Salles', 'fa-solid fa-mug-saucer', Room::class);
         yield MenuItem::linkToCrud('Logiciels', 'fa-solid fa-laptop-code', Software::class);
-        yield MenuItem::linkToCrud('Statuts', 'fa-solid fa-network-wired', Status::class);
-        yield MenuItem::linkToCrud("Type d'équipements", 'fa-solid fa-toolbox', TypeEquipment::class);
+        yield MenuItem::linkToCrud('Statuts', 'fa-solid fa-sitemap', Status::class);
+        yield MenuItem::linkToCrud("Type d'équipements", 'fa-solid fa-icons', TypeEquipment::class);
     }
 }
