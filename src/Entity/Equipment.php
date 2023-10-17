@@ -38,7 +38,6 @@ class Equipment
 
     public function __construct()
     {
-        $this->rooms = new ArrayCollection();
         $this->software = new ArrayCollection();
         $this->equipmentRoomQuantities = new ArrayCollection();
     }
