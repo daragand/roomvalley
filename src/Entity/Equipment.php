@@ -22,8 +22,6 @@ class Equipment
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'equipments')]
-    private Collection $rooms;
 
     #[ORM\ManyToMany(targetEntity: Software::class, inversedBy: 'equipment')]
     private Collection $software;
@@ -35,10 +33,13 @@ class Equipment
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentRoomQuantity::class, orphanRemoval: true)]
+    private Collection $equipmentRoomQuantities;
+
     public function __construct()
     {
-        $this->rooms = new ArrayCollection();
         $this->software = new ArrayCollection();
+        $this->equipmentRoomQuantities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,33 +71,7 @@ class Equipment
         return $this;
     }
 
-    /**
-     * @return Collection<int, Room>
-     */
-    public function getRooms(): Collection
-    {
-        return $this->rooms;
-    }
-
-    public function addRoom(Room $room,int $quantity): static
-    {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms->add($room);
-            $room->addEquipment($this,$quantity);
-        }
-
-        return $this;
-    }
-
-    public function removeRoom(Room $room): static
-    {
-        if ($this->rooms->removeElement($room)) {
-            $room->removeEquipment($this);
-        }
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection<int, Software>
      */
@@ -141,6 +116,36 @@ class Equipment
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EquipmentRoomQuantity>
+     */
+    public function getEquipmentRoomQuantities(): Collection
+    {
+        return $this->equipmentRoomQuantities;
+    }
+
+    public function addEquipmentRoomQuantity(EquipmentRoomQuantity $equipmentRoomQuantity): static
+    {
+        if (!$this->equipmentRoomQuantities->contains($equipmentRoomQuantity)) {
+            $this->equipmentRoomQuantities->add($equipmentRoomQuantity);
+            $equipmentRoomQuantity->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipmentRoomQuantity(EquipmentRoomQuantity $equipmentRoomQuantity): static
+    {
+        if ($this->equipmentRoomQuantities->removeElement($equipmentRoomQuantity)) {
+            // set the owning side to null (unless already changed)
+            if ($equipmentRoomQuantity->getEquipment() === $this) {
+                $equipmentRoomQuantity->setEquipment(null);
+            }
+        }
 
         return $this;
     }
