@@ -24,7 +24,7 @@ class Reservation
     private ?float $total_price = null;
 
     #[ORM\Column]
-    private ?bool $isConfirmed = null;
+    private ?bool $isConfirmed = false;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]

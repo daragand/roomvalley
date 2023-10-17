@@ -2,12 +2,14 @@
 
 namespace App\DataFixtures;
 
+use DateInterval;
 use Faker\Factory;
 use App\Entity\Room;
-use App\Entity\User;
 
 // les différentes entités
+use App\Entity\User;
 use App\Entity\Status;
+use DateTimeImmutable;
 use App\Entity\Address;
 use App\Entity\Ergonomy;
 use App\Entity\Software;
@@ -143,8 +145,8 @@ class AppFixtures extends Fixture
                 /**
                  * Gestion des salles.
                  */
-                
-                 $roomsObjects=[];
+                $rooms=[];
+                $roomObject=[];
 
                 for($i=0;$i<10;$i++){
 
@@ -169,13 +171,14 @@ class AppFixtures extends Fixture
                                 ->setCapacity($faker->numberBetween(1,70))
                                 ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)])
                                 ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
+                                ->setPrice($faker->randomFloat(2, 20, 300))
                                 ->addImagesRoom($imgRoomObject)
                                 ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)])
                 // pour l'ajout de l'équipement, on place la quantité attribué. Elle ne doit pas dépasser la quantité de l'équipement. Toutefois, il est normalement nécessaire de faire une requête pour vérifier la quantité disponible. Mais pour l'exemple, on ne le fait pas.
                                 ->addEquipment($equipments[$equipNumber],
                                 $faker->numberBetween(1,($equipments[$equipNumber]->getQuantity())));
                     $manager->persist($roomObject);
-                    $roomsObjects[]=$roomObject;
+                    $rooms[]=$roomObject;
                 }
 
 
@@ -216,9 +219,43 @@ class AppFixtures extends Fixture
                 $users[]=$userObject;
                 }
 
+            ////////////
+            
+            // Création des réservations
 
-        // $product = new Product();
-        // $manager->persist($product);
+                $reservations=[];
+                $resaObject=[];
+
+                for($i=0;$i<20;$i++){
+                    //avant d'instancier l'objet, définition de la salle concernée par la réservation.
+                    $roomReserved = $rooms[$faker->numberBetween(0, count($rooms) - 1)];
+
+                    $resaObject = new Reservation();
+                    $startDate = $faker->dateTimeBetween('-1 month', '+6 month');
+                    $resaObject->setDateStart($startDate);
+                
+                    // Génération  un nombre aléatoire entre 1 et 3 pour la durée de réservation.Cela ne tient pas compte si la date est en week-end ou non.
+                    $duration = $faker->numberBetween(1, 3);
+                    
+                    // Calcul de la date de fin en ajoutant la durée en jours à la date de début. la fonction clone permet de copier l'objet
+                    $endDate = clone $startDate;
+                    $endDate->add(new DateInterval("P{$duration}D"));
+                    
+                    $resaObject->setDateEnd($endDate);
+                    $resaObject->setUsers($users[$faker->numberBetween(0, count($users) - 1)]);
+                    
+                    // Pour le calcul du prix total, prise en compte la date de début, la date de fin et le prix de la salle.
+                    $roomPrice = $roomReserved->getPrice();
+                    $totalPrice = $duration * $roomPrice;
+                    
+                    $resaObject->setTotalPrice($totalPrice)
+                        ->setRoom($roomReserved)
+                        ->setIsConfirmed($faker->randomElement([true, false]));
+                    
+                    $manager->persist($resaObject);
+                    $reservations[] = $resaObject;
+
+                }
 
         $manager->flush();
     }
