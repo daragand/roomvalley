@@ -183,10 +183,11 @@ class Room
         return $this->equipments;
     }
 
-    public function addEquipment(Equipment $equipment): static
+    public function addEquipment(Equipment $equipment, int $quantity): static
     {
         if (!$this->equipments->contains($equipment)) {
             $this->equipments->add($equipment);
+            $equipment->addRoom($this, $quantity);
         }
 
         return $this;
