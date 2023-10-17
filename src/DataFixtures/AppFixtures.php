@@ -116,6 +116,48 @@ class AppFixtures extends Fixture
                 $manager->persist($equipmentObject);
             }
 
+            /////////////
+            /**
+             * Gestion des adresses. Utilisation de l'API BAN du Gouvernement pour le passage final en production.
+             */
+
+             $addressObject=[];
+
+             for ($i=0;$i<50;$i++){
+                 $addressObject=new Address();
+                 $addressObject->setAddress($faker->streetAddress())
+                                ->setCity($faker->city())
+                                ->setZip($faker->postcode())
+                //choix de ne pas dépasser 8 étages pour l'étage. Si 0, cela signifie que l'équipement est au rez-de-chaussée.
+                                ->setFloor($faker->numberBetween(0,8));
+                $manager->persist($addressObject);
+             }
+
+                /////////////
+
+                /**
+                 * Gestion des salles.
+                 */
+                
+                 $roomsObjects=[];
+
+                for($i=0;$i<10;$i++){
+
+                    $roomObject=new Room();
+                    $roomObject->setName($faker->word())
+                                ->setDescription($faker->text())
+                                ->setCapacity($faker->numberBetween(1,70))
+                                ->setAddress($addressObject[$faker->numberBetween(0,count($addressObject)-1)])
+                                ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
+                                ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)])
+                                ->addEquipment($equipmentObject[$faker->numberBetween(0,count($equipmentObject)-1)]);
+                    $manager->persist($roomObject);
+                    $roomsObjects[]=$roomObject;
+                }
+
+
+
+
 
         // $product = new Product();
         // $manager->persist($product);

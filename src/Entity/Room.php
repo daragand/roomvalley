@@ -44,6 +44,10 @@ class Room
     #[ORM\OneToMany(mappedBy: 'room', targetEntity: ImagesRoom::class, orphanRemoval: true)]
     private Collection $imagesRooms;
 
+    #[ORM\ManyToOne(inversedBy: 'rooms')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Status $status = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -221,6 +225,18 @@ class Room
                 $imagesRoom->setRoom(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
