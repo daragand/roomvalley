@@ -19,7 +19,7 @@ class SearchController extends AbstractController
         //lancement de la recherche dans le service Search
          
         $searchReq = $search->search();
-        
+
         //comptage des résultats. Permet de savoir si il y a des résultats ou non et de les afficher dans la vue.
         $nbResults = count($searchReq);
         
