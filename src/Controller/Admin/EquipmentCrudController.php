@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 
 class EquipmentCrudController extends AbstractCrudController
 {
@@ -29,7 +30,7 @@ class EquipmentCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id'),
-            TextField::new('type_id'),
+            TextField::new('type'),
             TextField::new('name'),
             TextareaField::new('description'),
         ];

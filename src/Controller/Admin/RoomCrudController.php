@@ -30,7 +30,7 @@ class RoomCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id'),
-            IdField::new('address_id'),
+            TextField::new('address'),
             TextField::new('name'),
             TextareaField::new('description'),
             NumberField::new('capacity'),
