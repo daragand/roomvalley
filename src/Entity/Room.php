@@ -50,6 +50,12 @@ class Room
     #[ORM\OneToMany(mappedBy: 'room', targetEntity: EquipmentRoomQuantity::class, orphanRemoval: true)]
     private Collection $equipmentRoomQuantities;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column]
+    private ?int $capacityMin = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -253,5 +259,29 @@ class Room
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCapacityMin(): ?int
+    {
+        return $this->capacityMin;
+    }
+
+    public function setCapacityMin(int $capacityMin): static
+    {
+        $this->capacityMin = $capacityMin;
+
+        return $this;
     }
 }

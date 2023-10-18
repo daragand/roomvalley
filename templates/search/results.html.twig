@@ -69,22 +69,24 @@
                                             <h4 class="title">Equipement</h4>
 											<ul class="list-unstyled">
 												{% for item in room.equipmentRoomQuantities %}
-
+                                                                 {{ dump(item.equipment.name) }}
+                                                                 {{ dump(item.equipment.icon) }}
                                                 
-                                                    {% for stuff in item.equipment %}
+                                                    
+                                                    
                                                         
 													<li class="media d-flex align-items-start">
-														{% if item.icon %}
+														{# {% if item.equipment.getIcon() is null %}
 
-															<img class="d-flex me-3" src="{{ item.icon }}" width="60" alt="{{ item.name }}">
+															<img class="d-flex me-3" src="{{ item.equipment.icon }}" width="60" alt="{{ item.equipment.name }}">
 														{% else %}
 															<img class="d-flex me-3" src="https://via.placeholder.com/60" alt="icon par défault">
-														{% endif %}
+														{% endif %} #}
 														<div class="media-body">
-															<h5 class="mt-0 mb-1">{{ item.name }}</h5>
+															<h5 class="mt-0 mb-1">{{ item.equipment.name }}</h5>
 														</div>
 													</li>
-                                                    {% endfor %}
+                                                    
 												{% endfor %}
 
 
