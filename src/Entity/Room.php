@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
 class Room
@@ -266,9 +267,9 @@ class Room
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+    public function setSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = Uuid::v4()->__toString();
 
         return $this;
     }
