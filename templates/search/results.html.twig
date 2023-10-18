@@ -1,27 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchController!{% endblock %}
+{% block title %}Hello SearchController!
+{% endblock %}
 
 {% block body %}
 
-    <h1>SearchController</h1>
+	<h1>{{ name_page }}</h1>
 
-    <form action="{{ path('app_search') }}" method="GET">
-        <input type="text" name="q" id="search" placeholder="Search">
-        <input type="submit" value="Search">
-    </form>
+	<form action="{{ path('app_search') }}" method="GET">
+		<input type="text" name="q" id="search" placeholder="Search">
+		<input type="submit" value="Search">
+	</form>
 
-    {{ dump(query) }}
-{% if results|length > 0 %}
-    <ul>
-        {% for result in results %}
-        {{ dump(result) }}
-            {% for room in result %}
-                
-            <li>{{ room.name }}</li>
-            {% endfor %}
-        {% endfor %}
-    </ul>
-{% endif %}
-    
-{% endblock %}
+	{{ dump(query) }}
+	{% if results|length > 0 %}
+		<article class="row">
+            <div class="col-12">
+                <div class="row">
+			{% for result in results %}
+				{{ dump(result) }}
+
+				{% for room in result %}
+					<div class="col-lg-3 col-md-6">
+                    <!-- Card -->
+					<div
+						class="card h-100 mx-auto">
+						{# pour la page de résultat, récupération de la première image mais sous condition de présence d'image.
+                        Si l'image est absente, on récupère l'image par défaut #}
+						{% if room.imagesRooms[0] %}
+
+							<img class="card-img-top img-fluid " src={{ room.imagesRooms[0].path }} alt={{ room.name }}>
+
+						{% else %}
+						{% endif %}
+						<div class="card-body flex-grow-1">
+							<h2 class="card-title ">{{ room.name }}</h2>
+                            <h5 class="display-6 ">{{ room.price }} €/jour</h5>
+                            {# La description est réduite en affichage #}
+							<p class="card-text">{{ room.description|slice(0,100) }}</p>
+							<a href="#" class="btn btn-primary">Voir la salle {#{{ path('app_room', {id: room.id}) }}#}</a>
+						</div>
+						</div>
+					</div>
+						
+					{% endfor %}
+				{% endfor %}
+                    </div>
+                </div>
+		</article>
+		{% endif %}
+
+	{% endblock %}
