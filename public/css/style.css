@@ -1,0 +1,14 @@
+.topbar
+{
+    background-color: #28ad87;
+    font-family: Cooper Black;
+    font-weight: bold;
+    font-size : 20px;
+}
+#navbarSupportedContent
+{
+    justify-content: right;
+}
+.nav-item:hover .nav-link {
+    color: white; /* Couleur du texte au survol */
+}
