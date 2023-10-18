@@ -5,105 +5,168 @@
 
 {% block body %}
 
-<h1>{{ name_page }}</h1>
+	<h1>{{ name_page }}</h1>
 
-<form action="{{ path('app_search') }}" method="GET">
-	<input type="text" name="q" id="search" placeholder="Search">
-	<input type="submit" value="Search">
-</form>
-
-{{ dump(query) }}
-{% if results|length > 0 %}
-	<article class="row">
-		<div class="col-12">
-			<div class="row">
-				{% for result in results %}
-					{{ dump(result) }}
-
-					{% for room in result %}
-						<div class="col-lg-3 col-md-6">
-							<div
-								class="card h-100 mx-auto">
-								{# pour la page de résultat, récupération de la première image mais sous condition de présence d'image.
-								                        Si l'image est absente, on récupère l'image par défaut #}
-								{% if room.imagesRooms[0] %}
-
-									<img class="card-img-top img-fluid " src={{ room.imagesRooms[0].path }} alt={{ room.name }}>
-
-									{% else %}
-								{% endif %}
-								<div class="card-body flex-grow-1">
-									<h2 class="card-title ">{{ room.name }}
-									</h2>
-									<h6>
-										<i class="bi bi-people-fill"></i>
-										{{ room.capacity }}
-										-
-										<i class="bi bi-tag-fill"></i>
-										{{ room.price }}
-										€/jour</h6>
-									{# La description est réduite en affichage #}
-									<p class="card-text">{{ room.description|slice(0,100) }}</p>
-									{# espace pour les équipements de la salle et les ergonomies #}
-									<div class="row">
-										<div class="col-md-8 p-4">
-											<h4 class="title">Ergonomies</h4>
-											<ul class="list-unstyled">
-												{% for ergo in room.ergonomy %}
-													<li class="media d-flex align-items-start">
-														{% if ergo.icon %}
-
-															<img class="d-flex me-3" src="{{ ergo.icon }}" width="60" alt="{{ ergo.name }}">
-														{% else %}
-															<img class="d-flex me-3" src="https://via.placeholder.com/60" alt="icon par défault">
-														{% endif %}
-														<div class="media-body">
-															<h5 class="mt-0 mb-1">{{ ergo.name }}</h5>
-														</div>
-													</li>
-												{% endfor %}
-
-
-											</ul>
-
-                                            <h4 class="title">Equipement</h4>
-											<ul class="list-unstyled">
-												{% for item in room.equipmentRoomQuantities %}
-                                                                 {{ dump(item.equipment.name) }}
-                                                                 {{ dump(item.equipment.icon) }}
-                                                
-                                                    
-                                                    
-                                                        
-													<li class="media d-flex align-items-start">
-														{# {% if item.equipment.getIcon() is null %}
-
-															<img class="d-flex me-3" src="{{ item.equipment.icon }}" width="60" alt="{{ item.equipment.name }}">
-														{% else %}
-															<img class="d-flex me-3" src="https://via.placeholder.com/60" alt="icon par défault">
-														{% endif %} #}
-														<div class="media-body">
-															<h5 class="mt-0 mb-1">{{ item.equipment.name }}</h5>
-														</div>
-													</li>
-                                                    
-												{% endfor %}
-
-
-											</ul>
-										</div>
-									</div>
-								</div>
-
-								<a href="#" class="btn btn-primary">Voir la salle
-									{#{{ path('app_room', {id: room.id}) }}#}
-								</a>
-							
+	<form action="{{ path('app_search') }}" method="GET">
+		<input type="text" name="q" id="search" placeholder="Search">
+		<input type="submit" value="Search">
+	</form>
+	{# ouverture container et row #}
+	<article class="container">
+		<div
+			class="row">
+			{# colonne des filtres #}
+			<section class="col-lg-3 order-1">
+				<div class="lefttside-hidden-bar">
+					<div class="hsidebar-header bdrb1">
+						<h4 class="list-title">filtrez vos résultats</h4>
+						<div class="sidebar-close-icon">
+							<span class="far fa-times"></span>
 						</div>
 					</div>
+					<div class="hsidebar-content">
+						<div class="widget-wrapper">
+							<div class="sidebar-accordion">
+								<div class="accordion" id="accordionExample2">
+									
+                                    
+                                    {# début card pour les filtres #}
+                                    <div class="card mb20 pb10">
+										<div class="card-header active" id="headingZero">
+											<h4>
+												<button class="btn btn-link ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">Ergonomies</button>
+											</h4>
+										</div>
+										<div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#accordionExample">
+											<div class="card-body card-body px-0 pt-0">
+												<div class="radio-element">
 
-				{% endfor %}
-			{% endfor %}
+                                                {# placement des résultats de la boucle sur les ergonomies #}
+                                                {% for ergo in results.ergonomy %}
+													<div class="form-check d-flex align-items-center mb10">
+														<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1s">
+														<label class="form-check-label" for="flexRadioDefault1s">Express 24H</label>
+														<span class="right-tags">(1,945)</span>
+													</div>
+                                                {% endfor %}
+													
+												</div>
+											</div>
+										</div>
+									</div>
+                                    {# fin de card #}
+									
+									
+									
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{# colonne du milieu #}
+			<section class="col-lg-9">
+				{% if results|length > 0 %}
+					<article>
+						<div class="">
+							<div class="row">
+								{% for result in results %}
+									{{ dump(result) }}
+
+									{% for room in result %}
+										<div class="col-lg-3 col-md-6">
+											<div
+												class="card h-100 mx-auto">
+												{# pour la page de résultat, récupération de la première image mais sous condition de présence d'image.
+																															                        Si l'image est absente, on récupère l'image par défaut #}
+												{% if room.imagesRooms[0] %}
+
+													<img class="card-img-top img-fluid " src={{ room.imagesRooms[0].path }} alt={{ room.name }}>
+
+													{% else %}
+												{% endif %}
+												<div class="card-body flex-grow-1">
+													<h2 class="card-title ">{{ room.name }}
+													</h2>
+													<h6>
+														<i class="bi bi-people-fill"></i>
+														{{ room.capacity }}
+														-
+														<i class="bi bi-tag-fill"></i>
+														{{ room.price }}
+														€/jour</h6>
+													{# La description est réduite en affichage #}
+													<p class="card-text">{{ room.description|slice(0,100) }}</p>
+													{# espace pour les équipements de la salle et les ergonomies #}
+													<div class="row">
+														<div class="col-md-8 p-4">
+															<h4 class="title">Ergonomies</h4>
+															<ul class="list-unstyled">
+																{% for ergo in room.ergonomy %}
+																	<li class="media d-flex align-items-start">
+																		{% if ergo.icon %}
+
+																			<img class="d-flex me-3" src="{{ ergo.icon }}" width="60" alt="{{ ergo.name }}">
+																		{% else %}
+																			<img class="d-flex me-3" src="https://via.placeholder.com/60" alt="icon par défault">
+																		{% endif %}
+																		<div class="media-body">
+																			<h5 class="mt-0 mb-1">{{ ergo.name }}</h5>
+																		</div>
+																	</li>
+																{% endfor %}
+
+
+															</ul>
+
+															<h4 class="title">Equipement</h4>
+															<ul
+																class="list-unstyled">
+																{# la boucle sur les équipements de la salle #}
+																{% for item in room.equipmentRoomQuantities %}
+
+
+																	<li class="media d-flex align-items-start">
+																		{% if item.equipment.icon is null %}
+
+																			<img class="d-flex me-3" src="{{ item.equipment.icon }}" width="60" alt="{{ item.equipment.name }}">
+																		{% else %}
+																			<img class="d-flex me-3" src="https://via.placeholder.com/60" alt="icon par défault">
+																		{% endif %}
+																		<div class="media-body">
+																			<h5 class="mt-0 mb-1">{{ item.quantity }}
+																				{{ item.equipment.name }}</h5>
+																		</div>
+																	</li>
+
+																{% endfor %}
+
+
+															</ul>
+														</div>
+													</div>
+												</div>
+
+												<a href="#" class="btn btn-primary">Voir la salle
+													{#{{ path('app_room', {id: room.id}) }}#}
+												</a>
+
+											</div>
+										</div>
+
+									{% endfor %}
+								{% endfor %}
+							</div>
+						</div>
+					</article>
+				{% endif %}
+			</section>
+
+			{# fermeture container et row #}
 		</div>
-	</div>
-</article>{% endif %}{% endblock %}
+	</article>
+
+{% endblock %}
