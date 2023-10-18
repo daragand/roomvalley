@@ -29,7 +29,7 @@ class EquipmentCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id'),
-            IdField::new('type_id'),
+            TextField::new('type_id'),
             TextField::new('name'),
             TextareaField::new('description'),
         ];
