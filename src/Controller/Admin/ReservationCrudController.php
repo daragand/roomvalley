@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 
 class ReservationCrudController extends AbstractCrudController
 {
@@ -30,10 +31,10 @@ class ReservationCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id'),
-            IdField::new('users_id'),
-            IdField::new('room_id'),
-            TextField::new('date_start'),
-            TextField::new('date_end'),
+            TextField::new('users'),
+            TextField::new('room'),
+            DateField::new('date_start'),
+            DateField::new('date_end'),
             NumberField::new('total_price'),
             BooleanField::new('is_confirmed'),
         ];

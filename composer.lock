@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "2e3c85ffd78208be45b45fd2b3fc79ff",
+
     "packages": [
         {
             "name": "doctrine/cache",
