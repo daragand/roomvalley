@@ -15,10 +15,10 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_start = null;
+    public ?\DateTimeInterface $date_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_end = null;
+    public ?\DateTimeInterface $date_end = null;
 
     #[ORM\Column]
     private ?float $total_price = null;
