@@ -38,18 +38,24 @@ class Room
     #[ORM\ManyToMany(targetEntity: Ergonomy::class, inversedBy: 'rooms')]
     private Collection $ergonomy;
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, inversedBy: 'rooms')]
-    private Collection $equipments;
+    
 
     #[ORM\OneToMany(mappedBy: 'room', targetEntity: ImagesRoom::class, orphanRemoval: true)]
     private Collection $imagesRooms;
+
+    #[ORM\ManyToOne(inversedBy: 'rooms')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Status $status = null;
+
+    #[ORM\OneToMany(mappedBy: 'room', targetEntity: EquipmentRoomQuantity::class, orphanRemoval: true)]
+    private Collection $equipmentRoomQuantities;
 
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->ergonomy = new ArrayCollection();
-        $this->equipments = new ArrayCollection();
         $this->imagesRooms = new ArrayCollection();
+        $this->equipmentRoomQuantities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -171,30 +177,7 @@ class Room
         return $this;
     }
 
-    /**
-     * @return Collection<int, Equipment>
-     */
-    public function getEquipments(): Collection
-    {
-        return $this->equipments;
-    }
-
-    public function addEquipment(Equipment $equipment): static
-    {
-        if (!$this->equipments->contains($equipment)) {
-            $this->equipments->add($equipment);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipment(Equipment $equipment): static
-    {
-        $this->equipments->removeElement($equipment);
-
-        return $this;
-    }
-
+   
     /**
      * @return Collection<int, ImagesRoom>
      */
@@ -219,6 +202,48 @@ class Room
             // set the owning side to null (unless already changed)
             if ($imagesRoom->getRoom() === $this) {
                 $imagesRoom->setRoom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EquipmentRoomQuantity>
+     */
+    public function getEquipmentRoomQuantities(): Collection
+    {
+        return $this->equipmentRoomQuantities;
+    }
+
+    public function addEquipmentRoomQuantity(EquipmentRoomQuantity $equipmentRoomQuantity): static
+    {
+        if (!$this->equipmentRoomQuantities->contains($equipmentRoomQuantity)) {
+            $this->equipmentRoomQuantities->add($equipmentRoomQuantity);
+            $equipmentRoomQuantity->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipmentRoomQuantity(EquipmentRoomQuantity $equipmentRoomQuantity): static
+    {
+        if ($this->equipmentRoomQuantities->removeElement($equipmentRoomQuantity)) {
+            // set the owning side to null (unless already changed)
+            if ($equipmentRoomQuantity->getRoom() === $this) {
+                $equipmentRoomQuantity->setRoom(null);
             }
         }
 

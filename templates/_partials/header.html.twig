@@ -1,0 +1,98 @@
+   <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin6" >
+         <!--a mettre dans le fichier css-->
+         <style>
+        .topbar {
+            background-color: #28ad87;
+        }
+     
+        </style>
+            <nav class="navbar top-navbar navbar-expand-lg">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-lg-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    
+
+                    <div class="navbar-brand">
+
+                        <a href="index.html">
+                    <img src="{{ asset('images/logoroomvalleynoir.png') }}" alt="Logo Roomvalley" class="h-25 w-25">
+
+                        </a>
+                    </div>
+
+
+                    <a class="topbartoggler d-block d-lg-none waves-effect waves-dark" href="javascript:void(0)"
+                        data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav float-left me-auto ms-3 ps-1">
+
+                    <li class="nav-item d-none d-md-block px-2"> <a href="#" style="color: black;">Rooms Page</a></li>
+
+                    <li class="nav-item d-none d-md-block px-2"> <a href="#" style="color: black;">Contact Us</a></li>
+                    
+
+
+                        
+                    </ul>
+
+                    <ul class="navbar-nav float-end">
+
+                        <li class="nav-item d-none d-md-block px-2 ">
+                            <a class="nav-link" href="javascript:void(0)">
+                                <form>
+                                    <div class="customize-input">
+                                        <input class="form-control custom-shadow custom-radius border-0 bg-white"
+                                            type="search" placeholder="Search" aria-label="Search">
+                                        <i class="form-control-icon" data-feather="search"></i>
+                                        
+                                    </div>
+                                </form>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown px-2">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                
+                                <span class="ms-2 d-none d-lg-inline-block"><span class="text-dark">Hello, </span> <span
+                                        class="text-dark">Jason Doe</span> <i data-feather="chevron-down"
+                                        class="svg-icon"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-right user-dd animated flipInY">
+                                <a class="dropdown-item" href="#"><i data-feather="user"
+                                        class="svg-icon me-2 ms-1"></i>
+                                    My Profile</a>
+                                <a class="dropdown-item" href="#"><i data-feather="credit-card"
+                                        class="svg-icon me-2 ms-1"></i>
+                                    My Balance</a>
+                                <a class="dropdown-item" href="#"><i data-feather="mail"
+                                        class="svg-icon me-2 ms-1"></i>
+                                    Inbox</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i data-feather="settings"
+                                        class="svg-icon me-2 ms-1"></i>
+                                    Account Setting</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i data-feather="power"
+                                        class="svg-icon me-2 ms-1"></i>
+                                    Logout</a>
+                                <div class="dropdown-divider"></div>
+                                <div class="pl-4 p-3"><a href="#" class="btn btn-sm btn-info">View
+                                        Profile</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
