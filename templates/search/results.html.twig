@@ -34,7 +34,7 @@
 						{% else %}
 						{% endif %}
 						<div class="card-body flex-grow-1">
-							<h2 class="card-title ">{{ room.name }}</h2>
+							<h2 class="card-title ">{{ room.name }} - <i class="fas fa-align-right"></i>{{ room.capacity }}</h2>
                             <h5 class="display-6 ">{{ room.price }} €/jour</h5>
                             {# La description est réduite en affichage #}
 							<p class="card-text">{{ room.description|slice(0,100) }}</p>
