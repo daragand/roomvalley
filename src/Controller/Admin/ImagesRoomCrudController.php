@@ -28,7 +28,7 @@ class ImagesRoomCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id'),
-            TextField::new('room_id'),
+            TextField::new('room'),
             TextField::new('path'),
         ];
     }
