@@ -11,12 +11,12 @@ class PageController extends AbstractController
 {
     #[Route('/', name: 'app_page')]
     public function index(
-        Room $room,
+        
     ): Response
     {
         return $this->render('page/room.html.twig', [
             'controller_name' => 'PageController',
-            'room' => $room
+            
         ]);
     }
 
