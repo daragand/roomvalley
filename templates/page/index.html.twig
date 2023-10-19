@@ -44,7 +44,7 @@
                         <div class="row">
                 {% endif %}
                             <div class="col-md-3">
-                                <div class="card mb-4 card-hover-shadow">
+                                <div class="card mb-4 card-hover-shadow flex-grow-1">
                                     <img src="{{ room.imagesRooms[0] }}" class="card-img-top" alt="...">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ room.name }}</h5>
@@ -59,7 +59,8 @@
                                         </li>
                                             <li class="list-group-item d-flex flex-row border-0">
                                         {% for ergo in room.ergonomy %}
-                                                <i class="bi bi-check-circle-fill"></i>&nbsp;
+                                              
+                                                <img src="{{ ergo.icon }}"  width="40" alt="">
                                                 {{ ergo.name }}
                                         {% endfor %}
                                             </li>
