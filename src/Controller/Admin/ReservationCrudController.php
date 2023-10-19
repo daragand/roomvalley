@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\ImagesRoom;
 use App\Entity\Reservation;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use App\Controller\Admin\ImagesRoomCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -56,6 +57,9 @@ class ReservationCrudController extends AbstractCrudController
                 ->setIcon('fa-solid fa-euro-sign')
                 ->setHelp('Saisissez le prix de la salle'),
             NumberField::new('total_price', 'Prix de la salle'),
+
+            // AssociationField::new('imagesRoom', 'Image de la réservation')
+            //     ->setCrudController(ImagesRoomCrudController::class),
 
             BooleanField::new('is_confirmed', 'Confirmé(e)'),
         ];
