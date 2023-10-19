@@ -36,6 +36,9 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentRoomQuantity::class, orphanRemoval: true)]
     private Collection $equipmentRoomQuantities;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $icon = null;
+
     public function __construct()
     {
         $this->software = new ArrayCollection();
@@ -146,6 +149,18 @@ class Equipment
                 $equipmentRoomQuantity->setEquipment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }

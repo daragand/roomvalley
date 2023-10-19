@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
 class Room
@@ -32,7 +33,7 @@ class Room
     private Collection $reservations;
 
     #[ORM\ManyToOne(inversedBy: 'rooms')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: Ergonomy::class, inversedBy: 'rooms')]
@@ -49,6 +50,12 @@ class Room
 
     #[ORM\OneToMany(mappedBy: 'room', targetEntity: EquipmentRoomQuantity::class, orphanRemoval: true)]
     private Collection $equipmentRoomQuantities;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
+    #[ORM\Column]
+    private ?int $capacityMin = null;
 
     public function __construct()
     {
@@ -253,5 +260,29 @@ class Room
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(): static
+    {
+        $this->slug = Uuid::v4()->__toString();
+
+        return $this;
+    }
+
+    public function getCapacityMin(): ?int
+    {
+        return $this->capacityMin;
+    }
+
+    public function setCapacityMin(int $capacityMin): static
+    {
+        $this->capacityMin = $capacityMin;
+
+        return $this;
     }
 }

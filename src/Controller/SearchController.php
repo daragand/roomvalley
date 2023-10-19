@@ -39,7 +39,7 @@ class SearchController extends AbstractController
          $req = $request->getCurrentRequest()->query->get('q');
 
         return $this->render('search/results.html.twig', [
-            'controller_name' => 'Résultats de recherche',
+            'name_page' => 'Résultats de recherche',
             'results' => $results,
             'query' => $req,
             'nbResults' => $nbResults,

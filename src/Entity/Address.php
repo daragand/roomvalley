@@ -154,6 +154,6 @@ class Address
 
     public function __toString(): string
     {
-        return $this->address. ', ' .$this->zip;
+        return $this->address. ', ' .$this->zip. ', ' . $this->city;
     }
 }

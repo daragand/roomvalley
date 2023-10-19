@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\TypeEquipment;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -27,9 +27,15 @@ class TypeEquipmentCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('name'),
-            TextField::new('icon'),
+            FormField::addPanel('Nom du type d\'équipement')
+                ->setIcon('fa-solid fa-n')
+                ->setHelp('Saisissez le nom du type d\'équipement'),
+            TextField::new('name', 'Nom du type d\'équipement'),
+
+            FormField::addPanel('Choix de l\'icône')
+                ->setIcon('fa-solid fa-i')
+                ->setHelp('Choisissez un icône'),
+            TextField::new('icon', 'Choix de l\icône'),
         ];
     }
 }
