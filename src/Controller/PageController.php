@@ -13,12 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PageController extends AbstractController
 {
     #[Route('/', name: 'app_page')]
-    public function index(
-        
-    ): Response
+    public function index(RoomRepository $roomRepository ): Response
     {
-        return $this->render('page/room.html.twig', [
+        $rooms = $roomRepository->findAll();
+        return $this->render('page/index.html.twig', [
             'controller_name' => 'PageController',
+            'rooms' => $rooms,
             
         ]);
     }
@@ -30,7 +30,7 @@ class PageController extends AbstractController
     {
         return $this->render('page/room_show.html.twig', [
             'controller_name' => 'PageController',
-            'room' => $room
+            'room' => $room,
         ]);
     }
     #[Route('/contact', name: 'contact')]
