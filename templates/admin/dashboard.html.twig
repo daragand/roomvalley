@@ -84,7 +84,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <h3 class="card-title text-dark">Demande de Pre-Reservation Urgente à traiter {{ notConfirmedReservations|length }}</h3>
+                        {% if notConfirmedReservations|length == 0 %}
+                            <h3 class="card-title text-success">Demande de Pre-Reservation Urgente à traiter 😊 {{ notConfirmedReservations|length }}</h3>
+                        {% else %}
+                            <h3 class="card-title text-danger">Demande de Pre-Reservation Urgente à traiter 😠 {{ notConfirmedReservations|length }}</h3>
+                        {% endif %}
                         <div class="ms-auto">
                             <div class="dropdown sub-dropdown">
                                 <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
