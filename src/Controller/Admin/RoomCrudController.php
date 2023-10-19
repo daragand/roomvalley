@@ -29,6 +29,15 @@ class RoomCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInPlural('Salles')
+            ->setEntityLabelInSingular('Salle')
+            ->setPageTitle('index','Gestion des salles')
+            ;
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -37,27 +46,34 @@ class RoomCrudController extends AbstractCrudController
                 ->setHelp('Saisissez le nom de la salle'),
             TextField::new('name', 'Nom de la salle'),
 
-            AssociationField::new('address', 'Adresse')
+            FormField::addPanel('Adresse de la salle')
+                ->setIcon('fa-solid fa-location-dot'),
+            AssociationField::new('address', 'Adresse de la salle')
                 ->setCrudController(AddressCrudController::class),
 
             FormField::addPanel('Capacité de la salle')
+                ->setIcon('fa-solid fa-warehouse')
                 ->setHelp('Saisissez la capacité de la salle'),
             NumberField::new('capacity', 'Capacité de la salle'),
 
             FormField::addPanel('Description de la salle')
+                ->setIcon('fa-solid fa-receipt')
                 ->setHelp('Écrivez une description'),
             TextareaField::new('description', 'Description de la salle'),
 
             FormField::addPanel('Prix de la salle')
+                ->setIcon('fa-solid fa-euro-sign')
                 ->setHelp("Saisissez le prix de la salle"),
             NumberField::new('price', 'Prix de la salle'),
 
-            FormField::addPanel('Choix de l\'équipement')
+            FormField::addPanel('Choix de l\'équipements')
+                ->setIcon('fa-solid fa-toolbox')
                 ->setHelp("Choisissez vos équipements"),
-            AssociationField::new('equipmentRoomQuantities', 'Choix de l\'équipement')
+            AssociationField::new('equipmentRoomQuantities', 'Choix de l\'équipements')
                 ->setCrudController(EquipmentRoomQuantityCrudController::class),
 
             FormField::addPanel('Choix de l\'ergonomie')
+                ->setIcon('fa-solid fa-wheelchair')
                 ->setHelp("Choisissez l'ergonomie"),
             AssociationField::new('ergonomy', 'Choix de l\'ergonomie')
                 ->setCrudController(ErgonomyCrudController::class),

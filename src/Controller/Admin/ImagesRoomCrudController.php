@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\ImagesRoom;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -27,9 +27,15 @@ class ImagesRoomCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('room'),
-            TextField::new('path'),
+            FormField::addPanel('Salle')
+                ->setIcon('fa-brands fa-codepen')
+                ->setHelp('Salle'),
+            TextField::new('room', 'Salle'),
+
+            FormField::addPanel('Chemin de l\'image')
+                ->setIcon('fa-solid fa-image')
+                ->setHelp('Saisissez le chemin d\'accès pour l\'image'),
+            TextField::new('path', 'Chemin de l\'image'),
         ];
     }
 }
