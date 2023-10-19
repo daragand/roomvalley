@@ -33,7 +33,7 @@ class Room
     private Collection $reservations;
 
     #[ORM\ManyToOne(inversedBy: 'rooms')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Address $address = null;
 
     #[ORM\ManyToMany(targetEntity: Ergonomy::class, inversedBy: 'rooms')]
