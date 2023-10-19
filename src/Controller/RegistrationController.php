@@ -31,33 +31,12 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $address = new Address();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $formAddress = $this->createForm(AddressType::class, $address);
-        $formAddress->handleRequest($request);
+         $form = $this->createForm(RegistrationFormType::class, $user);
+    
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //récupération des données de l'adresse dans un premier temps
-            // $addressData = $formAddress->get('address')->getData();
-           
-            dd($formAddress->getData(), $form->getData());
-
-            // $zip = $formAddress->get('zip')->getData();
-            // $city = $formAddress->get('city')->getData();
-                
-
-            //enregistrement de l'adresse dans la base de données
-            $address->setAddress($addressData)
-                    ->setZip($zip)
-                    ->setCity($city);
-
-            //enregistrement dans la base de données
-            $entityManager->persist($address);
-            $entityManager->flush();
-
-            //récupération de l'id de l'adresse enregistrée dans la base de données
-            $user->setAddress($address->getId());
             
             
             
@@ -68,7 +47,11 @@ class RegistrationController extends AbstractController
                     $user,
                     $form->get('plainPassword')->getData()
                 )
-            );
+            )
+            ->setFirstname($form->get('firstname')->getData())
+            ->setLastname($form->get('lastname')->getData())
+            ->setPhone($form->get('phone')->getData())
+            ;
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -87,8 +70,8 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-            'addressForm' => $formAddress->createView(),
+            'registrationForm' => $form->createView()
+            
         ]);
     }
 
