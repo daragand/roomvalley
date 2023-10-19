@@ -47,15 +47,15 @@
 													<form action="{{ path('app_search') }}" method="GET">
 														<div class="form-group">
 
-															
-																{% for room in results.rooms %}
-																	{% for ergo in room.ergonomy %}
 
-																		<input type="checkbox" name="ergonomie" id="{{ ergo.id }}" value="{{ ergo.id }}" multiple>
-                                                                        <label for="ergonomie_2">{{ ergo.name }}</label><br />
-																	{% endfor %}
+															{% for room in results.rooms %}
+																{% for ergo in room.ergonomy %}
+
+																	<input type="checkbox" name="ergonomie" id="{{ ergo.id }}" value="{{ ergo.id }}" multiple>
+																	<label for="ergonomie_2">{{ ergo.name }}</label><br/>
 																{% endfor %}
-															
+															{% endfor %}
+
 														</div>
 														<button type="submit" class="btn btn-primary">Filtrer</button>
 													</form>
@@ -64,7 +64,7 @@
 										</div>
 									</div>
 									{# fin de card #}
-                                    {# début card pour les filtres #}
+									{# début card pour les filtres #}
 									<div class="card mb20 pb10">
 										<div class="card-header active" id="headingZero">
 											<h4>
@@ -80,15 +80,15 @@
 													<form action="{{ path('app_search') }}" method="GET">
 														<div class="form-group">
 
-															
-																{% for room in results.rooms %}
-																	{% for itemEquipment in room.equipmentRoomQuantities %}
 
-																		<input type="checkbox" name="ergonomie" id="{{ itemEquipment.id }}" value="{{ itemEquipment.id }}" multiple>
-                                                                        <label for="ergonomie_2">{{ itemEquipment.equipment.name }}</label><br />
-																	{% endfor %}
+															{% for room in results.rooms %}
+																{% for itemEquipment in room.equipmentRoomQuantities %}
+
+																	<input type="checkbox" name="ergonomie" id="{{ itemEquipment.id }}" value="{{ itemEquipment.id }}" multiple>
+																	<label for="ergonomie_2">{{ itemEquipment.equipment.name }}</label><br/>
 																{% endfor %}
-															
+															{% endfor %}
+
 														</div>
 														<button type="submit" class="btn btn-primary">Filtrer</button>
 													</form>
@@ -121,7 +121,7 @@
 											<div
 												class="card h-100 mx-auto">
 												{# pour la page de résultat, récupération de la première image mais sous condition de présence d'image.
-																																											                        Si l'image est absente, on récupère l'image par défaut #}
+																																																							                        Si l'image est absente, on récupère l'image par défaut #}
 												{% if room.imagesRooms[0] %}
 
 													<img class="card-img-top img-fluid " src={{ room.imagesRooms[0].path }} alt={{ room.name }}>
@@ -191,7 +191,7 @@
 												</div>
 
 												<a href="{{ path('app_room_show', {slug: room.slug}) }}" class="btn btn-primary">Voir la salle
-													
+
 												</a>
 
 											</div>
@@ -210,3 +210,4 @@
 	</article>
 
 {% endblock %}
+

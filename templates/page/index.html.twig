@@ -1,18 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PageController!{% endblock %}
+{% block title %}RoomValley{% endblock %}
 
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .carousel-inner {
+        display: flex;
+    }
+    h1, h2 {
+        font-family: 'Cooper Black';
+    }
+    h1 {
+        font-size: 4rem;
+        font-weight: bold;
+    }
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: black;
+    opacity: 0.3;
+    }
+
+    
 </style>
 
-<div class="wrapper">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Bienvenue chez RoomValley</h1>
+            <h2>Où chaque événement trouve son espace, et chaque moment devient mémorable.</h2>
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-     
-    </ul>
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for index, room in rooms %}
+                {% if index % 4 == 0 %}
+                    <div class="carousel-item{% if index == 0 %} active{% endif %}">
+                        <div class="row">
+                {% endif %}
+                            <div class="col-md-3">
+                                <div class="card mb-4">
+                                    <img src="{{ room.imagesRooms[0] }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ room.name }}</h5>
+                                        <p class="card-text">{{ room.description|slice(0, 100) }}...</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <i class="bi bi-people-fill"></i>
+                                            {{ room.capacity }} pers/max
+                                            <i class="bi bi-tag-fill"></i>
+                                            {{ room.price }} €/jour
+                                        </li>
+                                        {% for ergo in room.ergonomy %}
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill"></i>
+                                                {{ ergo.name }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div class="card-body">
+                                        <a href="{{ path('app_room_show', {slug: room.slug}) }}" class="btn btn-primary">Voir la salle</a>
+                                    </div>
+                                </div>
+                            </div>
+                {% if index % 4 == 3 or index == rooms|length - 1 %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    </div>
 </div>
+
+                    
 {% endblock %}
