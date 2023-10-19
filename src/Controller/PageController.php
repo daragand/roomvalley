@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Room;
 use Symfony\Component\Mime\Email;
+use App\Repository\RoomRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
