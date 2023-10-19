@@ -3,7 +3,7 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-{% for user in users|filter(user => user.id == app_user) %}
+{% for user in users|filter(user => user.id == app.user) %}
 <section style="background-color: #eee;">
     <h1 class="container py-4">Profil</h1>
     <div class="container py-5">
