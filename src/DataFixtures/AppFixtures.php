@@ -49,7 +49,6 @@ class AppFixtures extends Fixture
             $ergonomiesObjects[] = $ergonomyObject;
         }
 
-        //////////////
         //création des softwares. Ces derniers seront liés aux équipements de type Ordinateur
 
         $softwareNames = ['Windows', 'Linux', 'MacOS', 'Android', 'IOS', 'Word', 'Excel', 'Powerpoint', 'Outlook', 'Teams', 'Zoom', 'Photoshop', 'Illustrator', 'Indesign', 'Premiere Pro', 'After Effects', 'Final Cut Pro', 'Cubase', 'Ableton Live', 'FL Studio', 'Studio One', 'Reaper', 'Bitwig Studio'];
