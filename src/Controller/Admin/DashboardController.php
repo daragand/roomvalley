@@ -12,6 +12,7 @@ use App\Entity\Room;
 use App\Entity\Software;
 use App\Entity\Status;
 use App\Entity\TypeEquipment;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -22,11 +23,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 class DashboardController extends AbstractDashboardController
 {
+   
+    public function __construct(private ReservationRepository $reservationRepository)
+    {
+
+    }
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
-    }
+               
+        $reservations = $this->reservationRepository->findAll();
+                return $this->render('admin/dashboard.html.twig', [
+                   'reservation' => $reservations,
+                ]);
+            }
+
+        
+        
+    
 
     public function configureDashboard(): Dashboard
     {
@@ -40,6 +54,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard("Panneau d'administration", 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-users', User::class);
+        yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Address::class);
         yield MenuItem::linkToCrud('Équipements', 'fa-solid fa-toolbox', Equipment::class);
         yield MenuItem::linkToCrud('Ergonomies', 'fa-solid fa-wheelchair', Ergonomy::class);
         yield MenuItem::linkToCrud('Réservations', 'fa-solid fa-user-tie', Reservation::class);
