@@ -30,7 +30,7 @@ class ReservationCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            IdField::new('id')->hideOnForm(),
             TextField::new('users'),
             TextField::new('room'),
             DateField::new('date_start'),

@@ -80,11 +80,11 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <h3 class="card-title text-dark">Pre-Reservation Urgente à traiter {{ notConfirmedReservations|length }}</h3>
+                        <h3 class="card-title text-dark">Demande de Pre-Reservation Urgente à traiter {{ notConfirmedReservations|length }}</h3>
                         <div class="ms-auto">
                             <div class="dropdown sub-dropdown">
                                 <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -111,7 +111,84 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in reservation|slice(0, 10) %}
+                                {% for item in notConfirmedReservations|slice(0, 10) %}
+                                <tr>
+                                    <td class="border-top-0 px-2 py-4">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h5 class="text-dark mb-0 font-16 font-weight-medium">{{ item.users.firstname }} {{ item.users.lastname }}</h5>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="border-top-0 px-2 py-4">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h5 class="text-dark mb-0 font-16 font-weight-medium">{{ item.room.name }}</h5>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="border-top-0 px-2 py-4">
+                                        {{ item.date_start|date('d/m/Y') }}
+                                    </td>
+                                    <td class="border-top-0 text-center px-2 py-4">{{ item.date_end|date('d/m/Y') }}</td>
+                                    <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                        {% set start = item.date_start %}
+                                        {% set end = item.date_end %}
+                                        {% set days = date(start).diff(date(end)).days %}
+                                        {% set weekends = 0 %}
+                                        {% for i in 0..days %}
+                                        {% set day = date(start).modify('+' ~ i ~ 'day') %}
+                                        {% if day.format('N') not in ['6', '7'] %}
+                                        {% set weekends = weekends + 1 %}
+                                        {% endif %}
+                                        {% endfor %}
+                                        {{ days }}
+                                    </td>
+                                    <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                        {{ item.room.price * days }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--reservation card-->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="card-title text-dark">Dernières Reservation Confirmées {{ reservation|filter(r => r.isConfirmed == 1)|length }}</h3>
+                        <div class="ms-auto">
+                            <div class="dropdown sub-dropdown">
+                                <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i data-feather="more-vertical"></i>Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd1">
+                                    <a class="dropdown-item" href="#">Insert</a>
+                                    <a class="dropdown-item" href="#">Update</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table no-wrap v-middle mb-0">
+                            <thead>
+                                <tr class="border-0">
+                                    <th class="border-0 font-14 font-weight-medium text-muted">Client :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted px-2">Room :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted">Date Start :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Date End :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Nombre de jours reservé :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Prix totals :</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in reservation|filter(r => r.isConfirmed == 1)|slice(0, 10) %}
                                 <tr>
                                     <td class="border-top-0 px-2 py-4">
                                         <div class="d-flex no-block align-items-center">
@@ -156,5 +233,6 @@
             </div>
         </div>
     </div>
+  
 </div>
 {% endblock %}
