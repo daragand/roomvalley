@@ -116,8 +116,18 @@
 					</div>
                     {% if item.equipment.type == 'ordinateur' %}
                         {% for software in item.equipment.software %}
-                            {{ dump(software) }}
+                           
+                            <div class="list-meta d-flex justify-content-between align-items-center mt15">
+                                <div>
+                                    <span class="position-relative mr10">
+                                        {{ software.name }} -  {{ software.version }}
+                                    </span>
+                                    <span class="fz14">
+                                        {{ software.name }}
+                                    </span>
+                                </div>
                         {% endfor %}
+                        <br><br>
                     {% endif %}
 
 					{% endfor %}
