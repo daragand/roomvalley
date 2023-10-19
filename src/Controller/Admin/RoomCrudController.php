@@ -7,18 +7,11 @@ use App\Controller\Admin\AddressCrudController;
 use App\Controller\Admin\ErgonomyCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
-use Symfony\Component\Validator\Constraints\Choice;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use App\Controller\Admin\EquipmentRoomQuantityCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -36,23 +29,6 @@ class RoomCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
-    // public function configureCrud(Crud $crud): Crud
-    // {
-    //     return $crud
-    //         ->setEntityLabelInPlural('Salles')
-    //         ->setEntityLabelInSingular('Salle')
-    //         ->setPageTitle('index', 'Gestion des salles')
-    //         ;
-    // }
-
-    // public function configureFields(string $pageName): iterable
-    // {
-    //     return [
-    //         IdField::new('id'),
-    //         NumberField::new('price'),
-    //     ];
-    // }
-
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -60,8 +36,6 @@ class RoomCrudController extends AbstractCrudController
                 ->setIcon('fa-solid fa-mug-saucer')
                 ->setHelp('Saisissez le nom de la salle'),
             TextField::new('name', 'Nom de la salle'),
-
-            // Champ address
 
             AssociationField::new('address', 'Adresse')
                 ->setCrudController(AddressCrudController::class),
@@ -78,9 +52,13 @@ class RoomCrudController extends AbstractCrudController
                 ->setHelp("Saisissez le prix de la salle"),
             NumberField::new('price', 'Prix de la salle'),
 
+            FormField::addPanel('Choix de l\'équipement')
+                ->setHelp("Choisissez vos équipements"),
             AssociationField::new('equipmentRoomQuantities', 'Choix de l\'équipement')
                 ->setCrudController(EquipmentRoomQuantityCrudController::class),
 
+            FormField::addPanel('Choix de l\'ergonomie')
+                ->setHelp("Choisissez l'ergonomie"),
             AssociationField::new('ergonomy', 'Choix de l\'ergonomie')
                 ->setCrudController(ErgonomyCrudController::class),
         ];
