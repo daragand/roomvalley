@@ -109,6 +109,7 @@ class AppFixtures extends Fixture
                 $equipmentObject->setName($faker->word())
                                 ->setDescription($faker->text(200))
                                 ->setQuantity($faker->numberBetween(1,10))
+                                ->setIcon($faker->imageUrl(640,480,"equipement'.$i.'",true))
                     //pour le setType, récupération aléatoire d'un objet selon la taille du tableau $typeEquipmentObjects
                                 ->setType($typeEquipmentObjects[$faker->numberBetween(0,count($typeEquipmentObjects)-1)]);
                 //si l'information est un ordinateur, on lui ajoute des softwares de façon aléatoire. Pour l'exemple, pas plus de 5 logiciels par ordinateur.
@@ -169,7 +170,9 @@ class AppFixtures extends Fixture
                     $roomObject=new Room();
                     $roomObject->setName($faker->word())
                                 ->setDescription($faker->text())
-                                ->setCapacity($faker->numberBetween(1,70))
+                                ->setSlug()
+                                ->setCapacityMin($faker->numberBetween(1,10))
+                                ->setCapacity($roomObject->getCapacityMin()+$faker->numberBetween(1,70))
                                 ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)])
                                 ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
                                 ->setPrice($faker->randomFloat(2, 20, 300))
