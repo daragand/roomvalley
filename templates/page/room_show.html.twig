@@ -9,6 +9,52 @@
 
 {% block body %}
 
+<article class="container">
+  <section class="row">
+  {# contenu du carousel #}
+    <section class="col-lg-6 order-1">
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+  {% for image in room.imagesRooms %}
+
+    <li data-target="#carouselExampleIndicators" data-slide-to="{{ image.id }}" ></li>
+  {% endfor %}
+  </ol>
+  <div class="carousel-inner">
+    {% for image in room.imagesRooms %}
+    <div class="carousel-item active">
+      <img src={{ image.path }} class="d-block w-100">
+    </div>
+  {% endfor %}
+  </div>
+  {% if room.imagesRooms|length > 0 %}
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </a>
+  {% endif %}
+  
+</div>
+
+
+      </section>
+    {# contenu de la salle #}
+    <section class="col-lg-6 order-2">
+      </section>
+
+
+  </div>
+</article>
+
+
+
+
+
 {{ dump(room) }}
 
 <div class="container fixed-right mb-2 pt-2">
