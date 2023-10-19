@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Roomvalley Calendar TEST{% endblock %}
+{% block title %}Roomvalley Calendar TEST
+{% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
@@ -8,102 +9,251 @@
 {% endblock %}
 
 {% block body %}
+	{# container pour présentation de la salle #}
+	<article class="container">
+		<section
+			class="row">
+			{# contenu du carousel #}
+			<section class="col-lg-6 order-1">
 
-{{ dump(room) }}
+				<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						{% for image in room.imagesRooms %}
 
-<div class="container fixed-right mb-2 pt-2">
-    <div class="d-flex flex-column align-items-end">
-        <div id="calendar1">
-            <!-- Votre calendrier ici -->
-        </div>
-        <div>
-            <form action="" method='post' class="text-center">
-                <label for="date_start">Reservation pour le : </label>
-                <input type="date" name="date_start" id="date_start">
-                <br>
-                <label for="date_end">Fin de Reservation pour le : </label>
-                <input type="date" name="date_end" id="date_end">
-                <br>
-                <label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
-                <span name="nombre_jours" id="nombre_jours"></span>
-                <br>
-                <input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" disabled="disabled">
-            </form>
-        </div>
-    </div>
-</div>
+							<li data-target="#carouselExampleIndicators" data-slide-to="{{ image.id }}"></li>
+						{% endfor %}
+					</ol>
+					<div class="carousel-inner">
+						{% for image in room.imagesRooms %}
+							<div class="carousel-item active">
+								<img src={{ image.path }} class="d-block w-100">
+							</div>
+						{% endfor %}
+					</div>
+					{% if room.imagesRooms|length > 0 %}
+						<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only"></span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only"></span>
+						</a>
+					{% endif %}
 
-</div>
+				</div>
 
-     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    let isStartDateSelected = false;
-    let startDate = '';
-    const calendarEl = document.getElementById('calendar1');
-    const dateStartInput = document.getElementById('date_start');
-    const dateEndInput = document.getElementById('date_end');
-    const numberOfDaysElement = document.getElementById('nombre_jours');
 
-    function updateNumberOfDays() {
-        const dateStart = new Date(startDate);
-        const dateEnd = new Date(dateEndInput.value);
+			</section>
+			{# contenu présentation de la salle #}
+			<section class="col-lg-6 order-2">
+				<h1 class="mt-5">{{ room.name }}</h1>
+				<h3>{{ room.address }}</h3>
+				<div class="d-flex">
+					<h4 class="p-2">Capacité :
+						<i class="bi bi-people-fill p-2"></i>
+						{{ room.capacityMin }}
+						-
+						{{ room.capacity }}</h4><br><br>
+				</div>
+				<div class="budget">
+					<p class="mb-5 body-color">A partir de
+						<span class="fz17 fw500 dark-color ms-1">
+							<strong>{{ room.price }}</strong>
+							/jour</span>
+					</p>
+				</div>
+				<p>{{ room.description }}</p>
+			</section>
+			{# fin du contenu de présentation la salle #}
 
-        let numberOfDays = 0;
-        let currentDate = dateStart;
+		</div>
+	</article>
+	{# fin de la présentation de la salle #}
 
-        while (currentDate <= dateEnd) {
-            // Vérifier si le jour de la semaine n'est pas un samedi (6) ou un dimanche (0)
-            if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
-                numberOfDays++;
-            }
 
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
+	<article class="container">
+		<section
+			class="row">
 
-        // Afficher le nombre de jours entre les deux dates dans l'élément #nombre_jours
-        numberOfDaysElement.textContent = numberOfDays;
-    }
+			{# partie équipement et ergonomie de la salle #}
+			<div class="col-lg-6 order-1">
+				<h2 class="mt-5">Equipements et Ergonomie</h2>
 
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-        themeSystem: 'bootstrap5',
-        initialView: 'dayGridMonth',
-        timeZone: 'Europe/Paris',
-        locale: 'fr',
-        selectable: true,
-        headerToolbar: {
-            left: 'prev,next',
-            center: 'title',
-            right: 'prevYear,nextYear'
-        },
-        select: function(info) {
-            if (!isStartDateSelected) {
-                startDate = info.startStr;
-                dateStartInput.value = startDate;
-                isStartDateSelected = true;
-            } else {
-                const endDate = info.startStr;
-                dateEndInput.value = endDate;
-                isStartDateSelected = false;
-                updateNumberOfDays(); // Met à jour le nombre de jours quand date_end est sélectionné
-            }
-        }
-    });
+				<div class="d-flex">
+                    <div>
+					    <h3>Pour votre confort</h3>
+					{% for ergo in room.ergonomy %}
 
-    // Écoutez l'événement 'input' pour les champs de date
-    dateStartInput.addEventListener('input', function() {
-        startDate = dateStartInput.value;
-        updateNumberOfDays(); // Met à jour le nombre de jours dès que date_start est modifié
-    });
+						{#  présentaion des ergonomies #}
+						<div class="list-meta d-flex justify-content-between align-items-center mt15">
+							<div>
+								<span class="position-relative mr10">
+									<img class="rounded-circle w-25" src={{ ergo.icon }} alt="{{ ergo.name }}">
+								</span>
+								<span class="fz14">{{ ergo.name }}</span>
+							</div>
 
-    dateEndInput.addEventListener('input', function() {
-        updateNumberOfDays(); // Met à jour le nombre de jours dès que date_end est modifié
-    });
+						</div>
+                    </div>
+						{# fin test présentaion des érgonomies #}
+					{% endfor %}
+					{#  présentation des équipements #}
+					<div>
+						<h3>Les équipements à votre disposition</h3>
 
-    calendar.render();
+						{% for item in room.equipmentRoomQuantities %}
+
+							<div class="list-meta d-flex justify-content-between align-items-center mt15">
+								<div>
+									<span class="position-relative mr10">
+										<img class="rounded-circle w-25" src={{ item.equipment.icon }} alt="{{ item.equipment.name }}">
+									</span>
+									<span class="fz14">
+										{{ item.quantity }}
+										{{ item.equipment.type }}
+									</span>
+								</div>
+							</div>
+						{# gestion des logiciels #}
+						{% if item.equipment.type == 'ordinateur' %}
+							<a class="btn btn-info" data-bs-toggle="collapse" href="#collapseSoftware" aria-expanded="false" aria-controls="collapseSoftware">
+								voir les logiciels disponibles
+							</a>
+
+
+							<div class="collapse" id="collapseSoftware">
+								<div class="card card-body">
+
+
+									{% for software in item.equipment.software %}
+
+
+										<span class="position-relative mr10">
+											{{ software.name }}
+											-
+											{{ software.version }}
+										</span>
+
+									{% endfor %}
+								</div>
+							</div>
+							{# fin gestion des logiciels #}
+
+							<br><br>
+						{% endif %}
+
+					{% endfor %}
+					</div>
+					{# fin  présentation des équipements #}
+
+
+				</div>
+			</div>
+			{# fin partie équipement et ergonomie de la salle #}
+
+			{# partie calendrier #}
+			<div
+				class="col-lg-6 order-2">
+				{# début du calendrier #}
+				<div class="container fixed-right mb-2 pt-2">
+					<div class="d-flex flex-column align-items-end">
+						<div
+							id="calendar1"><!-- Votre calendrier ici -->
+						</div>
+						<div>
+							<form action="" method='post' class="text-center">
+								<label for="date_start">Reservation pour le :
+								</label>
+								<input type="date" name="date_start" id="date_start">
+								<br>
+								<label for="date_end">Fin de Reservation pour le :
+								</label>
+								<input type="date" name="date_end" id="date_end">
+								<br>
+								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
+								<span name="nombre_jours" id="nombre_jours"></span>
+								<br>
+								<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" disabled="disabled">
+							</form>
+						</div>
+					</div>
+				</div>
+
+				{# fin du calendrier #}
+			</div>
+			{# fin partie calendrier #}
+		</section>
+	</article>
+
+
+	{{ dump(room) }}
+
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+let isStartDateSelected = false;
+let startDate = '';
+const calendarEl = document.getElementById('calendar1');
+const dateStartInput = document.getElementById('date_start');
+const dateEndInput = document.getElementById('date_end');
+const numberOfDaysElement = document.getElementById('nombre_jours');
+
+function updateNumberOfDays() {
+const dateStart = new Date(startDate);
+const dateEnd = new Date(dateEndInput.value);
+
+let numberOfDays = 0;
+let currentDate = dateStart;
+
+while (currentDate <= dateEnd) { // Vérifier si le jour de la semaine n'est pas un samedi (6) ou un dimanche (0)
+if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+numberOfDays++;
+}
+
+currentDate.setDate(currentDate.getDate() + 1);
+}
+
+// Afficher le nombre de jours entre les deux dates dans l'élément #nombre_jours
+numberOfDaysElement.textContent = numberOfDays;
+}
+
+const calendar = new FullCalendar.Calendar(calendarEl, {
+themeSystem: 'bootstrap5',
+initialView: 'dayGridMonth',
+timeZone: 'Europe/Paris',
+locale: 'fr',
+selectable: true,
+headerToolbar: {
+left: 'prev,next',
+center: 'title',
+right: 'prevYear,nextYear'
+},
+select: function (info) {
+if (! isStartDateSelected) {
+startDate = info.startStr;
+dateStartInput.value = startDate;
+isStartDateSelected = true;
+} else {
+const endDate = info.startStr;
+dateEndInput.value = endDate;
+isStartDateSelected = false;
+updateNumberOfDays(); // Met à jour le nombre de jours quand date_end est sélectionné
+}
+}
 });
 
-</script>
+// Écoutez l'événement 'input' pour les champs de date
+dateStartInput.addEventListener('input', function () {
+startDate = dateStartInput.value;
+updateNumberOfDays(); // Met à jour le nombre de jours dès que date_start est modifié
+});
 
+dateEndInput.addEventListener('input', function () {
+updateNumberOfDays(); // Met à jour le nombre de jours dès que date_end est modifié
+});
 
+calendar.render();
+});
+	</script>
 {% endblock %}
- 

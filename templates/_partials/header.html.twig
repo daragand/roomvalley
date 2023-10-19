@@ -51,8 +51,10 @@
                         <i class="fas fa-search text-dark"></i> <!-- Icône de la loupe -->
                     </span>
                 </div>
+                <form action="{{ path('app_search') }}" method="GET">
                 <input class="form-control custom-shadow custom-radius border-0 bg-white"
-                    type="search" placeholder="Search" aria-label="Search">
+                    type="search" placeholder="Search" name="q" aria-label="Search">
+                    </form>
             </div>
         </form>
     </a>
