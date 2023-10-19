@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\AddressType;
 use App\Security\EmailVerifier;
+use App\Form\RegistrationFormType;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -29,10 +31,37 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $address = new Address();
         $form = $this->createForm(RegistrationFormType::class, $user);
+        $formAddress = $this->createForm(AddressType::class, $address);
+        $formAddress->handleRequest($request);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //récupération des données de l'adresse dans un premier temps
+            // $addressData = $formAddress->get('address')->getData();
+           
+            dd($formAddress->getData(), $form->getData());
+
+            // $zip = $formAddress->get('zip')->getData();
+            // $city = $formAddress->get('city')->getData();
+                
+
+            //enregistrement de l'adresse dans la base de données
+            $address->setAddress($addressData)
+                    ->setZip($zip)
+                    ->setCity($city);
+
+            //enregistrement dans la base de données
+            $entityManager->persist($address);
+            $entityManager->flush();
+
+            //récupération de l'id de l'adresse enregistrée dans la base de données
+            $user->setAddress($address->getId());
+            
+            
+            
+            
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -59,6 +88,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'addressForm' => $formAddress->createView(),
         ]);
     }
 
