@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Address;
+
 use App\Entity\User;
-use App\Form\AddressType;
+use Symfony\Component\Mime\Address;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 
