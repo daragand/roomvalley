@@ -118,8 +118,8 @@ class AppFixtures extends Fixture
 
                 }
             }
+            array_push($equipments,$equipmentObject);
                 $manager->persist($equipmentObject);
-                $equipments[]=$equipmentObject;
             }
 
             /////////////
@@ -137,8 +137,8 @@ class AppFixtures extends Fixture
                                 ->setZip($faker->postcode())
                 //choix de ne pas dépasser 8 étages pour l'étage. Si 0, cela signifie que l'équipement est au rez-de-chaussée.
                                 ->setFloor($faker->numberBetween(0,8));
+                                array_push($addresses,$addressObject);
                 $manager->persist($addressObject);
-                $addresses[]=$addressObject;
              }
 
                 /////////////
