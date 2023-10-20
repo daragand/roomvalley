@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Roomvalley Calendar TEST
+{% block title %}Roomvalley
 {% endblock %}
 
 {% block javascripts %}
@@ -13,6 +13,7 @@
 {# placements des réservations dans un tableau pour exploiter dans le calendrier #}
 {% set resEvents = [] %}
 {% for item in reslist %}
+
 {% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
 	{% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
 {% endfor %}
@@ -174,11 +175,12 @@
 			</div>
 			{# fin partie équipement et ergonomie de la salle #}
 
-			{# partie calendrier #}
+		{# partie calendrier #}
 			<div class="col-lg-6 order-2">
+			<div id="resas" data-list="{{ resEvents|json_encode }}"></div>
     <!-- début du calendrier -->
-    <div class="container fixed-right mb-2 pt-2">
-        <div class="d-flex flex-column align-items-end">
+    <div class="container-fluid mb-2 pt-2">
+        <div class="">
             <div id="calendar1"><!-- Votre calendrier ici --></div>
             <div>
                 <form action="{{ path('app_reservation_create', {slug: room.slug}, 'reservation') }}" method='post' class="text-center">
