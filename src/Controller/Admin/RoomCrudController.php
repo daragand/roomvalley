@@ -110,6 +110,8 @@ class RoomCrudController extends AbstractCrudController
                 ->setHelp("Choisissez l'ergonomie"),
             AssociationField::new('ergonomy', 'Choix de l\'ergonomie')
                 ->setCrudController(ErgonomyCrudController::class),
+
+                TextField::new('slug')
         ];
     }
 }

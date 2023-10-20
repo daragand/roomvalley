@@ -22,26 +22,6 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_profile_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_profile_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('profile/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_profile_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -64,7 +44,7 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
