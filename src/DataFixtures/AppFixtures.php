@@ -146,7 +146,6 @@ class AppFixtures extends Fixture
               
              }
 
-                /////////////
 
                 /**
                  * Gestion des salles.
