@@ -1,0 +1,29 @@
+<div id="resas" data-list="{{ resEvents|json_encode }}"></div>
+				<!-- début du calendrier -->
+				<div class="container-fluid mb-2 pt-2">
+					<div class="">
+						<div id="calendar1"><!-- Votre calendrier ici --></div>
+						<div>
+							<form action="{{ path('app_reservation_create', {slug: room.slug}, 'reservation') }}" method='post' class="text-center">
+								<label for="date_start">Reservation pour le :</label>
+								<input type="date" name="date_start" id="date_start">
+								<br>
+								<label for="date_end">Fin de Reservation pour le :</label>
+								<input type="date" name="date_end" id="date_end">
+								<br>
+								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
+								<input type="hidden" name="nombre_jours" id="duration">
+								<span name="nombre_jours" id="nombre_jours"></span>
+								{% for flash_error in app.flashes('errorResa') %}
+									<div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
+								{% endfor %}
+								<br>
+								{% if app.user %}
+									<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success">
+								{% else %}
+									<p>Vous devez être connecté pour Réserver</p>
+								{% endif %}
+							</form>
+						</div>
+					</div>
+				</div>
