@@ -9,6 +9,15 @@
 {% endblock %}
 
 {% block body %}
+{% if resa is defined %}
+	
+{{ dump(resa) }}
+{% endif %}
+{% for message_resa in app.flashes('successResa') %}
+        <div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert"><h5>{{ message_resa }}</h5> <a class="btn btn-success justify-content-center" href="{{ path('app_page') }}" class="btn btn-success">Voir mes réservations</a></div>
+		
+		
+    {% endfor %}
 	{# container pour présentation de la salle #}
 	<article class="container">
 		<section
@@ -162,7 +171,7 @@
 							id="calendar1"><!-- Votre calendrier ici -->
 						</div>
 						<div>
-							<form action="" method='post' class="text-center">
+							<form action="{{ path('app_reservation_create',{slug: room.slug},'reservation') }}" method='post' class="text-center">
 								<label for="date_start">Reservation pour le :
 								</label>
 								<input type="date" name="date_start" id="date_start">
@@ -172,9 +181,13 @@
 								<input type="date" name="date_end" id="date_end">
 								<br>
 								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
+								<input type="hidden" name="nombre_jours"  id="duration" >
 								<span name="nombre_jours" id="nombre_jours"></span>
+								  {% for flash_error in app.flashes('errorResa') %}
+        <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
+    {% endfor %}
 								<br>
-								<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" disabled="disabled">
+								<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success" >
 							</form>
 						</div>
 					</div>
@@ -198,6 +211,7 @@ const calendarEl = document.getElementById('calendar1');
 const dateStartInput = document.getElementById('date_start');
 const dateEndInput = document.getElementById('date_end');
 const numberOfDaysElement = document.getElementById('nombre_jours');
+const duration = document.getElementById('duration');
 
 function updateNumberOfDays() {
 const dateStart = new Date(startDate);
@@ -215,6 +229,8 @@ currentDate.setDate(currentDate.getDate() + 1);
 }
 
 // Afficher le nombre de jours entre les deux dates dans l'élément #nombre_jours
+duration.value = numberOfDays;
+console.log(duration)
 numberOfDaysElement.textContent = numberOfDays;
 }
 
