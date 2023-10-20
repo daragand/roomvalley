@@ -174,8 +174,11 @@
 								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
 								<input type="hidden" name="nombre_jours"  id="duration" >
 								<span name="nombre_jours" id="nombre_jours"></span>
+								  {% for flash_error in app.flashes('errorResa') %}
+        <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
+    {% endfor %}
 								<br>
-								<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" >
+								<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success" >
 							</form>
 						</div>
 					</div>

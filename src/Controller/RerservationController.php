@@ -43,6 +43,14 @@ class RerservationController extends AbstractController
         // calculer la durée de la réservation pour le prix total. mais cela ne tient pas compte du week-end. Choix de récupérer le nombre de jours calculé depuis le calendrier.
         $duration = $durationService->duration($dateStart, $dateEnd);
 
+
+        if (intval($nbDays) == 0) {
+            $this->addFlash(
+                'errorResa',
+                'La durée de votre réservation doit être supérieure à 0 jour(s)'
+            );
+            return $this->redirect($request->headers->get('referer'));
+        }
         // calculer le prix total de la réservation
         $totalPrice = $room->getPrice() * intval($nbDays);
         
@@ -63,7 +71,7 @@ class RerservationController extends AbstractController
             
 
     $Manager->persist($resa);
-    dd($resa);
+    dump($resa);
     $Manager->flush();
             
 
