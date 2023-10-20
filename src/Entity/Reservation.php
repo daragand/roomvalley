@@ -93,7 +93,7 @@ class Reservation
     {
         return $this->users;
     }
-
+//user étant déja bloqué, ajout d'un s à la fin de Users. Mais en réalité, un seul utilisateur est attendu
     public function setUsers(?User $users): static
     {
         $this->users = $users;
