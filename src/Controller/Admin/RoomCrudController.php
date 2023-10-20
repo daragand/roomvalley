@@ -52,29 +52,32 @@ class RoomCrudController extends AbstractCrudController
                 ->setHelp('Saisissez le nom de la salle'),
             TextField::new('name', 'Nom de la salle'),
 
-    //         ImageField::new('imagesRooms', 'Photo de la salle')
+            ImageField::new('imagesRooms', 'Photo de la salle')
+    ->setBasePath('uploads/')
+    ->setUploadDir('public/uploads')
+    ->setFormTypeOptions([
+        'mapped' => false,
+        'multiple' => true,
+        'empty_data'   => [],
+        'required' => true,
+        'attr' => ['accept' => 'image/*'],
+    ])
+    ->setUploadDir('/public/uploads')
+    ->setUploadedFileNamePattern('[randomhash].[extension]')
+    ->setRequired(true)
+    ->setCustomOption('move', false)
+    ->setCustomOption('fileName', function (UploadedFile $uploadedFile, array $context) {
+         'custom-name.' . $uploadedFile->guessExtension();
+
+    })
+    ->onlyOnForms(),
+
+    // ImageField::new('imagesRooms', 'Chemin de l\'image')
     // ->setBasePath('uploads/')
     // ->setUploadDir('public/uploads')
-    // ->setFormTypeOptions([
-    //     'by_reference' => false,
-    //     'multiple' => true,
-    //     'empty_data'   => [],
-    //     'required' => true,
-    //     'attr' => ['accept' => 'image/*'],
-    // ])
-    // ->setUploadDir('/public/uploads')
-    // ->setUploadedFileNamePattern('[randomhash].[extension]')
-    // ->setRequired(true)
-    // ->setCustomOption('move', false)
-    // ->setCustomOption('fileName', function (UploadedFile $uploadedFile, array $context) {
-    //      'custom-name.' . $uploadedFile->guessExtension();
-
-    // }),
-
-            FormField::addPanel('Photo de la salle')
-                ->setIcon('fa-solid fa-mug-saucer')
-                ->setHelp('Ajoutez une photo de la salle'),
-                ImageField::new('imagesRooms', 'Photo de la salle'),
+    // ->setUploadedFileNamePattern(
+    //     fn (UploadedFile $file): string => sprintf('upload_%d_%s.%s', random_int(1, 999), $file->getFilename(), $file->guessExtension()))
+    // ->onlyOnForms(),
 
             FormField::addPanel('Adresse de la salle')
                 ->setIcon('fa-solid fa-location-dot'),
