@@ -43,44 +43,10 @@
 
                 {{ form_errors(registrationForm) }}
 
-                {# imbrication du formulaire d'address dans le formulaire d'inscription' #}
-                    {{ form_start(addressForm, {
-            'csrf_token': registrationForm._token.vars.value
-        }) }}
-                         <div class="form-floating mb-2">
-                        {{ form_widget(addressForm.address, {
-                            attr: {
-                                class: 'form-control',
-                            }
-                        }) }}
-                        <label for="floatingInput">Numéro et voie </label>
-                    </div> <!-- END OF Address INPUT -->
-
-                        <div class="form-floating mb-2">
-                        {{ form_widget(addressForm.zip, {
-                            attr: {
-                                class: 'form-control',
-                            }
-                        }) }}
-                        <label for="floatingInput">Code postal </label>
-                    </div> <!-- END OF ZipCOde INPUT -->
-
-                         
-
-                         <div class="form-floating mb-2">
-                        {{ form_widget(addressForm.city, {
-                            attr: {
-                                class: 'form-control',
-                            }
-                        }) }}
-                        <label for="floatingInput">Ville </label>
-                       </div> <!-- END OF Town INPUT -->
-                    
-{{ form_end(addressForm) }}
+                
 
 
                 {{ form_start(registrationForm, {
-                    'csrf_token': addressForm._token.vars.value,
                     attr:{
                         class: 'col-4 m-auto',
                     } 
