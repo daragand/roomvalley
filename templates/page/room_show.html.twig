@@ -11,13 +11,17 @@
 {% block body %}
 {% if resa is defined %}
 	
-{{ dump(resa) }}
+
 {% endif %}
 {% for message_resa in app.flashes('successResa') %}
-        <div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert"><h5>{{ message_resa }}</h5> <a class="btn btn-success justify-content-center" href="{{ path('app_page') }}" class="btn btn-success">Voir mes réservations</a></div>
-		
-		
+        <div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert"><h5>{{ message_resa }}</h5> <a class="btn btn-success justify-content-center" href="{{ path('app_reservation') }}" class="btn btn-success">Voir mes réservations</a></div>		
     {% endfor %}
+	{% for message_error in app.flashes('errorResa') %}
+    <div class="alert alert-danger col-8 m-auto mb-5 text-center" role="alert">
+        <h5>{{ message_error }}</h5>
+    </div>		
+{% endfor %}
+
 	{# container pour présentation de la salle #}
 	<article class="container">
 		<section
@@ -162,40 +166,36 @@
 			{# fin partie équipement et ergonomie de la salle #}
 
 			{# partie calendrier #}
-			<div
-				class="col-lg-6 order-2">
-				{# début du calendrier #}
-				<div class="container fixed-right mb-2 pt-2">
-					<div class="d-flex flex-column align-items-end">
-						<div
-							id="calendar1"><!-- Votre calendrier ici -->
-						</div>
-						<div>
-							<form action="{{ path('app_reservation_create',{slug: room.slug},'reservation') }}" method='post' class="text-center">
-								<label for="date_start">Reservation pour le :
-								</label>
-								<input type="date" name="date_start" id="date_start">
-								<br>
-								<label for="date_end">Fin de Reservation pour le :
-								</label>
-								<input type="date" name="date_end" id="date_end">
-								<br>
-								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
-								<input type="hidden" name="nombre_jours"  id="duration" >
-								<span name="nombre_jours" id="nombre_jours"></span>
-								  {% for flash_error in app.flashes('errorResa') %}
-        <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-								<br>
-								{% if app.user %}
-									<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success">
-								{% else %}
-									<p>Vous devez être connecté pour Réserver</p>
-								{% endif %}
-							</form>
-						</div>
-					</div>
-				</div>
+			<div class="col-lg-6 order-2">
+    <!-- début du calendrier -->
+    <div class="container fixed-right mb-2 pt-2">
+        <div class="d-flex flex-column align-items-end">
+            <div id="calendar1"><!-- Votre calendrier ici --></div>
+            <div>
+                <form action="{{ path('app_reservation_create', {slug: room.slug}, 'reservation') }}" method='post' class="text-center">
+                    <label for="date_start">Reservation pour le :</label>
+                    <input type="date" name="date_start" id="date_start">
+                    <br>
+                    <label for="date_end">Fin de Reservation pour le :</label>
+                    <input type="date" name="date_end" id="date_end">
+                    <br>
+                    <label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
+                    <input type="hidden" name="nombre_jours" id="duration" >
+                    <span name="nombre_jours" id="nombre_jours"></span>
+                    {% for flash_error in app.flashes('errorResa') %}
+                        <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+                    <br>
+                    {% if app.user %}
+                        <input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success">
+                    {% else %}
+                        <p>Vous devez être connecté pour Réserver</p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 				{# fin du calendrier #}
 			</div>

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -15,9 +16,14 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[CustomAssert\RoomNotReserved]
+    
+
     public ?\DateTimeInterface $date_start = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[CustomAssert\RoomNotReserved]
+  
     public ?\DateTimeInterface $date_end = null;
 
     #[ORM\Column]
