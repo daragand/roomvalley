@@ -45,8 +45,9 @@ class AppFixtures extends Fixture
             $ergonomyObject->setName($ergonomy)
                 ->setDescription($faker->text(200))
                 ->setIcon("/images/ergonomy/default.png");
+                array_push($ergonomiesObjects, $ergonomyObject);
             $manager->persist($ergonomyObject);
-            $ergonomiesObjects[] = $ergonomyObject;
+           
         }
 
         //création des softwares. Ces derniers seront liés aux équipements de type Ordinateur
@@ -58,8 +59,8 @@ class AppFixtures extends Fixture
             $softwareObject = new Software();
             $softwareObject->setName($softwareName)
                 ->setVersion($faker->randomFloat(1, 1, 10));
+                array_push($softwareObjects, $softwareObject);
             $manager->persist($softwareObject);
-            $softwareObjects[] = $softwareObject;
         }
 
         //////////////
@@ -72,8 +73,9 @@ class AppFixtures extends Fixture
         foreach ($statusNames as $statusName) {
             $statusObject = new Status();
             $statusObject->setName($statusName);
+            array_push($statusObjects, $statusObject);
             $manager->persist($statusObject);
-            $statusObjects[] = $statusObject;
+        
         }
 
         //////////////
@@ -90,8 +92,9 @@ class AppFixtures extends Fixture
                 $typeEquipmentObject=new TypeEquipment();
                 $typeEquipmentObject->setName($typeEquipment)
                                     ->setIcon("/images/typeEquipment/default.png"); //
+                array_push($typeEquipmentObjects,$typeEquipmentObject);
                 $manager->persist($typeEquipmentObject);
-                $typeEquipmentObjects[]=$typeEquipmentObject;
+              
             }
 
         //////////////
@@ -119,7 +122,9 @@ class AppFixtures extends Fixture
                 }
             }
             array_push($equipments,$equipmentObject);
+            array_push($equipments,$equipmentObject);
                 $manager->persist($equipmentObject);
+                $equipments[]=$equipmentObject;
             }
 
             /////////////
@@ -137,8 +142,8 @@ class AppFixtures extends Fixture
                                 ->setZip($faker->postcode())
                 //choix de ne pas dépasser 8 étages pour l'étage. Si 0, cela signifie que l'équipement est au rez-de-chaussée.
                                 ->setFloor($faker->numberBetween(0,8));
-                                array_push($addresses,$addressObject);
                 $manager->persist($addressObject);
+                $addresses[]=$addressObject;
              }
 
                 /////////////
@@ -161,10 +166,17 @@ class AppFixtures extends Fixture
                      $equipNumber = $faker->numberBetween(1,count($equipments));
 
                     //  Instanciation de l'objet image avec le nom et numéro d'index
-                     $imgRoomObject=new ImagesRoom();
+
+                    $imagesRoom=[];
+                    for($j=0;$j<rand(1,3);$j++){
+                        $imgRoomObject=new ImagesRoom();
                         $imgRoomObject->setPath($faker->imageUrl(640,480,"room'.$i.'",true));
+                        array_push($imagesRoom,$imgRoomObject);
                         //on persiste l'image
                         $manager->persist($imgRoomObject);
+                        
+                    }
+                     
 
                     $roomObject=new Room();
                     $roomObject->setName($faker->word())
@@ -174,15 +186,24 @@ class AppFixtures extends Fixture
                                 ->setCapacity($roomObject->getCapacityMin()+$faker->numberBetween(1,70))
                                 ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)])
                                 ->setStatus($statusObjects[$faker->numberBetween(0,count($statusObjects)-1)])
-                                ->setPrice($faker->randomFloat(2, 20, 300))
-                                ->addImagesRoom($imgRoomObject)
-                                ->addErgonomy($ergonomiesObjects[$faker->numberBetween(0,count($ergonomiesObjects)-1)]);
-                // pour l'ajout de l'équipement, utilisation d'une boucle pour instancier différents objet d'equipement. .
+                                ->setPrice($faker->randomFloat(2, 20, 300));
+                                for($k=0;$k<count($imagesRoom);$k++){
+                                    $roomObject->addImagesRoom($imagesRoom[$k])
+                                                ->addErgonomy($ergonomiesObjects[$k]);
+                                }
+                    
+               
+                               
+                
+              
+                
+                
+                                // pour l'ajout de l'équipement, utilisation d'une boucle pour instancier différents objet d'equipement. .
                     $numEquipmentsToAdd=$faker->numberBetween(1,5);
 
-                for ($j = 0; $j < $numEquipmentsToAdd; $j++) {
-                    // Pour chaque équipement à ajouter, obtenez un numéro aléatoire entre 1 et le nombre d'équipements.
-                    $equipNumber = $faker->numberBetween(1, count($equipments));
+                for ($l = 0; $l < $numEquipmentsToAdd; $l++) {
+                    // Pour chaque équipement à ajouter, obtenir un numéro aléatoire entre 1 et le nombre d'équipements. Ainsi,on exploitera le même id pour l'objet équipement.
+                    $equipNumber = $faker->numberBetween(0, count($equipments)-1);
             
                     // Créez un nouvel enregistrement EquipmentRoomQuantity pour chaque équipement. La quantité n'est pas vérifiée avec la quantité de l'équipement.Choix pour gain de temps.
                     $equipmentRoomQuantity = new EquipmentRoomQuantity();
@@ -198,8 +219,8 @@ class AppFixtures extends Fixture
     //finalisation de l'instanciation de la salle
 
                     $roomObject->addEquipmentRoomQuantity($equipmentRoomQuantity);
+                    array_push($rooms,$roomObject);
                     $manager->persist($roomObject);
-                    $rooms[]=$roomObject;
                 }
 
 
@@ -222,8 +243,9 @@ class AppFixtures extends Fixture
                                 ->setPassword($faker->password())
                                 ->setRoles(['ROLE_USER'])
                                 ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)]);
+                                array_push($users,$userObject);
                     $manager->persist($userObject);
-                    $users[]=$userObject;
+                    
                 }
 
                 //création d'un objet user admin | 3 au total
@@ -236,8 +258,9 @@ class AppFixtures extends Fixture
                             ->setPassword($faker->password())
                             ->setRoles(['ROLE_ADMIN'])
                             ->setAddress($addresses[$faker->numberBetween(0,count($addresses)-1)]);
+                array_push($users,$userObject);
                 $manager->persist($userObject);
-                $users[]=$userObject;
+               
                 }
 
             ////////////
@@ -272,9 +295,10 @@ class AppFixtures extends Fixture
                     $resaObject->setTotalPrice($totalPrice)
                         ->setRoom($roomReserved)
                         ->setIsConfirmed($faker->randomElement([true, false]));
+                        array_push($reservations,$resaObject);
                     
                     $manager->persist($resaObject);
-                    $reservations[] = $resaObject;
+                   
 
                 }
 
