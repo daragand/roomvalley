@@ -74,15 +74,36 @@ class RerservationController extends AbstractController
 
 
         $Manager->persist($resa);
-        dump($resa);
+
         $Manager->flush();
 
+        $query = $Manager->createQuery(
+            'SELECT r
+            FROM App\Entity\Reservation r
+            WHERE r.users = :user
+            ORDER BY r.id DESC'
+        )->setParameter('user', $this->getUser())
+            ->setMaxResults(1)
+            ->getResult();
 
 
-        return $this->render('reservation/reservation.html.twig', [
-            'controller_name' => 'ReservationController',
-            'reservation' => $reservation,
+        // afficher un message de confirmation
+        // dd($query   );
+
+        $latestReservation = $query[0];
+        if ($latestReservation) {
+            $dateDebut = $latestReservation->getDateStart();
+            $dateFin = $latestReservation->getDateEnd();
+            $roomName= $latestReservation->getRoom()->getName();
+            $message = 'Votre réservation pour la salle <strong>'.$roomName.'</strong> du ' . $dateDebut ->format('d-m-Y') . ' au '.$dateFin ->format('d-m-Y').' a bien été prise en compte.';
+            $this->addFlash('successResa', $message);
+        }
+
+        // dd($query);
+        return $this->render('page/room_show.html.twig', [
+            'controller_name' => 'PageController',
             'room' => $room,
+            'resa'=>$query
         ]);
     }
 }
