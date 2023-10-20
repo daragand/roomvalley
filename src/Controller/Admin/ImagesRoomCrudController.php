@@ -6,9 +6,10 @@ use App\Entity\ImagesRoom;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class ImagesRoomCrudController extends AbstractCrudController
 {
@@ -40,11 +41,9 @@ class ImagesRoomCrudController extends AbstractCrudController
             ImageField::new('path', 'Chemin de l\'image')
                 ->setBasePath('uploads/')
                 ->setUploadDir('public/uploads')
-                ->setFormTypeOptions([
-                    'mapped' => false,
-                    'by_reference' => false,
-                    'multiple' => true,
-                ])
+                ->setUploadedFileNamePattern(
+                    fn (UploadedFile $file): string => sprintf('upload_%d_%s.%s', random_int(1, 999), $file->getFilename(), $file->guessExtension()))
+                
         ];
     }
 }
