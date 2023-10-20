@@ -35,7 +35,7 @@ class TypeEquipmentCrudController extends AbstractCrudController
             FormField::addPanel('Choix de l\'icône')
                 ->setIcon('fa-solid fa-i')
                 ->setHelp('Choisissez un icône'),
-            TextField::new('icon', 'Choix de l\icône'),
+            TextField::new('icon', 'Choix de l\'icône'),
         ];
     }
 }
