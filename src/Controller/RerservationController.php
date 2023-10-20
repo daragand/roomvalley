@@ -39,6 +39,8 @@ class RerservationController extends AbstractController
         DurationService $durationService,
         EntityManagerInterface $Manager
     ): Response {
+          // récupération des réservations liées à la salle pour le calendrier
+          $resList = $room->getReservations();
         // Récupération des données envoyées par le formulaire
         $dateStart = $request->request->get('date_start');
         $dateEnd = $request->request->get('date_end');
@@ -48,10 +50,10 @@ class RerservationController extends AbstractController
         $duration = $durationService->duration($dateStart, $dateEnd);
     
         // Si la durée est nulle, ajouter un message d'erreur et rediriger l'utilisateur
-        if (intval($nbDays) == 0) {
-            $this->addFlash('errorResa', 'La durée de votre réservation doit être supérieure à 0 jour(s)');
-            return $this->redirect($request->headers->get('referer'));
-        }
+        // if (intval($nbDays) == 0) {
+        //     $this->addFlash('errorResa', 'La durée de votre réservation doit être supérieure à 0 jour(s)');
+        //     return $this->redirect($request->headers->get('referer'));
+        // }
     
         // Conversion des dates string en objets DateTime pour une manipulation plus aisée
         $newDateStart = new \DateTime($dateStart);
@@ -83,7 +85,9 @@ class RerservationController extends AbstractController
                 'controller_name' => 'PageController',
                 'room' => $room,
                 'errors' => [],
-                'resa' => null
+                'resa' => null,
+                'reslist' => $resList,
+
             ]);
         } else {
             // Si aucune réservation conflictuelle n'est trouvée, créer la nouvelle réservation
@@ -121,7 +125,8 @@ class RerservationController extends AbstractController
                 'controller_name' => 'PageController',
                 'room' => $room,
                 'errors' => [],
-                'resa' => $query
+                'resa' => $query,
+                'reslist' => $resList,
             ]);
         }
     }
