@@ -35,9 +35,13 @@ class PageController extends AbstractController
         Room $room,
     ): Response
     {
+        // récupération des réservations liées à la salle pour le calendrier
+        $resList = $room->getReservations();
+
         return $this->render('page/room_show.html.twig', [
             'controller_name' => 'PageController',
             'room' => $room,
+            'reslist' => $resList,
         ]);
     }
 

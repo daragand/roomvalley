@@ -9,6 +9,15 @@
 {% endblock %}
 
 {% block body %}
+
+{# placements des réservations dans un tableau pour exploiter dans le calendrier #}
+{% set resEvents = [] %}
+{% for item in reslist %}
+{{ dump(item) }}
+{% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
+	{% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
+{% endfor %}
+
 {% if resa is defined %}
 	
 {{ dump(resa) }}
@@ -19,6 +28,7 @@
 		
     {% endfor %}
 	{# container pour présentation de la salle #}
+	
 	<article class="container">
 		<section
 			class="row">
@@ -162,11 +172,13 @@
 			{# fin partie équipement et ergonomie de la salle #}
 
 			{# partie calendrier #}
+			{# récupération des résas pour les exploiter dans le calendrier #}
+			<div id="resas" data-list="{{ resEvents|json_encode }}" ></div>
 			<div
 				class="col-lg-6 order-2">
 				{# début du calendrier #}
-				<div class="container fixed-right mb-2 pt-2">
-					<div class="d-flex flex-column align-items-end">
+				<div class="container-fluid  mb-2 pt-5">
+					<div class="card-body b-l calender-sidebar ">
 						<div
 							id="calendar1"><!-- Votre calendrier ici -->
 						</div>
@@ -216,6 +228,41 @@ const dateStartInput = document.getElementById('date_start');
 const dateEndInput = document.getElementById('date_end');
 const numberOfDaysElement = document.getElementById('nombre_jours');
 const duration = document.getElementById('duration');
+const resas= JSON.parse(document.getElementById("resas").getAttribute("data-list"));
+
+console.log(resas);
+////////////
+// Gestion des réservations placées en événements
+
+// Transformation des réservations en un format compatible avec FullCalendar
+  let events = resas.map(function (resa) {
+	
+
+	//condition pour la couleur de fond des réservations en fonction de la confirmation ou non
+    
+	if(resa.confirmation == true){
+// si la réservation est confirmée
+return {
+      title: 'Réservation', // Titre de l'événement
+      start: resa.start, // Date de début de la réservation
+      end: resa.end,
+	  eventDisplay:'auto', // Date de fin de la réservation
+	  backgroundColor:'red', // Couleur de fond de l'événement (peut être personnalisée)
+	};
+	}else{
+		// si la réservation n'est pas confirmée
+return {
+      title: 'Réservation', // Titre de l'événement
+      start: resa.start, // Date de début de la réservation
+      end: resa.end,
+	  eventDisplay:'auto', // Date de fin de la réservation
+	  backgroundColor:'orange', // Couleur de fond de l'événement (peut être personnalisée)
+	};
+	}
+	
+	
+  });
+
 
 function updateNumberOfDays() {
 const dateStart = new Date(startDate);
@@ -244,10 +291,20 @@ initialView: 'dayGridMonth',
 timeZone: 'Europe/Paris',
 locale: 'fr',
 selectable: true,
+businessHours: [ // specify an array instead
+  {
+    daysOfWeek: [ 1, 2, 3,4,5 ], //
+  },
+],
+events:events,
+//selectOverlap empêche la sélection de jours déjà réservés pour les éléments placés en background
+selectOverlap: function(event) {
+    return event.rendering === 'background';
+  },
 headerToolbar: {
 left: 'prev,next',
 center: 'title',
-right: 'prevYear,nextYear'
+right: 'prevYear,nextYear',
 },
 select: function (info) {
 if (! isStartDateSelected) {
