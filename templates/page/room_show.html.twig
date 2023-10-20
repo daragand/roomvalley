@@ -14,9 +14,9 @@
 {{ dump(resa) }}
 {% endif %}
 {% for message_resa in app.flashes('successResa') %}
-        <div class="alert alert-success col-8 m-auto mb-5" role="alert">{{ message_resa }}</div>
-		<a href="{{ path('app_page') }}" class="btn btn-success">Voir mes réservations</a>
-		</div>
+        <div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert"><h5>{{ message_resa }}</h5> <a class="btn btn-success justify-content-center" href="{{ path('app_page') }}" class="btn btn-success">Voir mes réservations</a></div>
+		
+		
     {% endfor %}
 	{# container pour présentation de la salle #}
 	<article class="container">

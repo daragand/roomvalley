@@ -87,7 +87,7 @@ class RerservationController extends AbstractController
             ->getResult();
 
 
-        // afficher un message de confirmation
+        // afficher un message de confirmation tenant compte des informations de la réservation
         // dd($query   );
 
         $latestReservation = $query[0];
@@ -95,7 +95,7 @@ class RerservationController extends AbstractController
             $dateDebut = $latestReservation->getDateStart();
             $dateFin = $latestReservation->getDateEnd();
             $roomName= $latestReservation->getRoom()->getName();
-            $message = 'Votre réservation pour la salle <strong>'.$roomName.'</strong> du ' . $dateDebut ->format('d-m-Y') . ' au '.$dateFin ->format('d-m-Y').' a bien été prise en compte.';
+            $message = 'Votre réservation pour la salle '.$roomName.' du ' . $dateDebut ->format('d-m-Y') . ' au '.$dateFin ->format('d-m-Y').' a bien été prise en compte.';
             $this->addFlash('successResa', $message);
         }
 
