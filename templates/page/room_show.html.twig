@@ -13,7 +13,6 @@
 {# placements des réservations dans un tableau pour exploiter dans le calendrier #}
 {% set resEvents = [] %}
 {% for item in reslist %}
-{{ dump(item) }}
 {% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
 	{% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
 {% endfor %}
