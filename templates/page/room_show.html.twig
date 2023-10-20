@@ -230,11 +230,12 @@ console.log(resas);
 
 // Transformer les réservations en un format compatible avec FullCalendar
   let events = resas.map(function (resa) {
+	console.log('les dates',resa)
     return {
       title: 'Réservation', // Titre de l'événement
-      start: resa.startDate, // Date de début de la réservation
-      end: resa.endDate, // Date de fin de la réservation
-      backgroundColor: 'green', // Couleur de fond de l'événement (peut être personnalisée)
+      start: resa.date_start.date, // Date de début de la réservation
+      end: resa.date_end.date, // Date de fin de la réservation
+      backgroundColor: 'orange', // Couleur de fond de l'événement (peut être personnalisée)
     };
   });
 
@@ -271,6 +272,7 @@ initialView: 'dayGridMonth',
 timeZone: 'Europe/Paris',
 locale: 'fr',
 selectable: true,
+events:events,
 headerToolbar: {
 left: 'prev,next',
 center: 'title',
