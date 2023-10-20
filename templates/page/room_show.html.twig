@@ -9,6 +9,13 @@
 {% endblock %}
 
 {% block body %}
+
+{# placements des réservations dans un tableau pour exploiter dans le calendrier #}
+{% set resEvents = [] %}
+{% for item in reslist %}
+	{% set resEvents = resEvents|merge({(item.id): item}) %}
+{% endfor %}
+
 {% if resa is defined %}
 	
 {{ dump(resa) }}
@@ -19,6 +26,7 @@
 		
     {% endfor %}
 	{# container pour présentation de la salle #}
+	
 	<article class="container">
 		<section
 			class="row">
@@ -162,6 +170,8 @@
 			{# fin partie équipement et ergonomie de la salle #}
 
 			{# partie calendrier #}
+			{# récupération des résas pour les exploiter dans le calendrier #}
+			<div id="resas" data-list="{{ resEvents|json_encode }}" ></div>
 			<div
 				class="col-lg-6 order-2">
 				{# début du calendrier #}
@@ -212,6 +222,27 @@ const dateStartInput = document.getElementById('date_start');
 const dateEndInput = document.getElementById('date_end');
 const numberOfDaysElement = document.getElementById('nombre_jours');
 const duration = document.getElementById('duration');
+const resas= JSON.parse(document.getElementById("resas").getAttribute("data-list"));
+
+console.log(resas);
+////////////
+// Gestion des réservations placées en événements
+
+// Transformer les réservations en un format compatible avec FullCalendar
+  let events = resas.map(function (resa) {
+    return {
+      title: 'Réservation', // Titre de l'événement
+      start: resa.startDate, // Date de début de la réservation
+      end: resa.endDate, // Date de fin de la réservation
+      backgroundColor: 'green', // Couleur de fond de l'événement (peut être personnalisée)
+    };
+  });
+
+		console.log(events);
+
+
+
+
 
 function updateNumberOfDays() {
 const dateStart = new Date(startDate);
@@ -243,7 +274,7 @@ selectable: true,
 headerToolbar: {
 left: 'prev,next',
 center: 'title',
-right: 'prevYear,nextYear'
+right: 'prevYear,nextYear',
 },
 select: function (info) {
 if (! isStartDateSelected) {
