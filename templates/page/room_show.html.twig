@@ -187,7 +187,11 @@
         <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
     {% endfor %}
 								<br>
-								<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success" >
+								{% if app.user %}
+									<input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success">
+								{% else %}
+									<p>Vous devez être connecté pour Réserver</p>
+								{% endif %}
 							</form>
 						</div>
 					</div>
@@ -200,7 +204,7 @@
 	</article>
 
 
-	{{ dump(room) }}
+	
 
 
 	<script>
