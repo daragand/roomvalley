@@ -246,7 +246,8 @@ return {
       title: 'Réservation', // Titre de l'événement
       start: resa.start, // Date de début de la réservation
       end: resa.end,
-	  eventDisplay:'auto', // Date de fin de la réservation
+	  allDay:true,
+	  display:'background', // Date de fin de la réservation
 	  backgroundColor:'red', // Couleur de fond de l'événement (peut être personnalisée)
 	};
 	}else{
@@ -255,7 +256,8 @@ return {
       title: 'Réservation', // Titre de l'événement
       start: resa.start, // Date de début de la réservation
       end: resa.end,
-	  eventDisplay:'auto', // Date de fin de la réservation
+	  allDay:true,
+	  display:'background', // détermine le fait que l'événement soit placé en couleur
 	  backgroundColor:'orange', // Couleur de fond de l'événement (peut être personnalisée)
 	};
 	}
@@ -290,6 +292,7 @@ themeSystem: 'bootstrap5',
 initialView: 'dayGridMonth',
 timeZone: 'Europe/Paris',
 locale: 'fr',
+firstDay: 1,
 selectable: true,
 businessHours: [ // specify an array instead
   {
