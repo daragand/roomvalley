@@ -69,7 +69,6 @@ class RerservationController extends AbstractController
             ->setUsers($this->getUser())
             ->setDateStart($newDateStart)
             ->setDateEnd($newDateEnd)
-            ->setDateEnd(new \DateTime())
             ->setTotalPrice($totalPrice);
 
 
