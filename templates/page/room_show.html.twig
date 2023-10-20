@@ -3,36 +3,33 @@
 {% block title %}Roomvalley
 {% endblock %}
 
-{% block javascripts %}
-	{{ parent() }}
-	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
-{% endblock %}
+
 
 {% block body %}
 
-{# placements des réservations dans un tableau pour exploiter dans le calendrier #}
-{% set resEvents = [] %}
-{% for item in reslist %}
+	{# placements des réservations dans un tableau pour exploiter dans le calendrier #}
+	{% set resEvents = [] %}
+	{% for item in reslist %}
 
-{% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
-	{% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
-{% endfor %}
+		{% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
+		{% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
+	{% endfor %}
 
-{% if resa is defined %}
-	
-
-{% endif %}
-{% for message_resa in app.flashes('successResa') %}
-        <div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert"><h5>{{ message_resa }}</h5> <a class="btn btn-success justify-content-center" href="{{ path('app_reservation') }}" class="btn btn-success">Voir mes réservations</a></div>		
-    {% endfor %}
+	{% if resa is defined %}{% endif %}
+	{% for message_resa in app.flashes('successResa') %}
+		<div class="alert alert-success col-8 m-auto mb-5 text-center" role="alert">
+			<h5>{{ message_resa }}</h5>
+			<a class="btn btn-success justify-content-center" href="{{ path('app_reservation') }}" class="btn btn-success">Voir mes réservations</a>
+		</div>
+	{% endfor %}
 	{% for message_error in app.flashes('errorResa') %}
-    <div class="alert alert-danger col-8 m-auto mb-5 text-center" role="alert">
-        <h5>{{ message_error }}</h5>
-    </div>		
-{% endfor %}
+		<div class="alert alert-danger col-8 m-auto mb-5 text-center" role="alert">
+			<h5>{{ message_error }}</h5>
+		</div>
+	{% endfor %}
 
 	{# container pour présentation de la salle #}
-	
+
 	<article class="container">
 		<section
 			class="row">
@@ -104,21 +101,21 @@
 				<h2 class="mt-5">Equipements et Ergonomie</h2>
 
 				<div class="d-flex">
-                    <div>
-					    <h3>Pour votre confort</h3>
-					{% for ergo in room.ergonomy %}
+					<div>
+						<h3>Pour votre confort</h3>
+						{% for ergo in room.ergonomy %}
 
-						{#  présentaion des ergonomies #}
-						<div class="list-meta d-flex justify-content-between align-items-center mt15">
-							<div>
-								<span class="position-relative mr10">
-									<img class="rounded-circle w-25" src={{ ergo.icon }} alt="{{ ergo.name }}">
-								</span>
-								<span class="fz14">{{ ergo.name }}</span>
+							{#  présentaion des ergonomies #}
+							<div class="list-meta d-flex justify-content-between align-items-center mt15">
+								<div>
+									<span class="position-relative mr10">
+										<img class="rounded-circle w-25" src={{ ergo.icon }} alt="{{ ergo.name }}">
+									</span>
+									<span class="fz14">{{ ergo.name }}</span>
+								</div>
+
 							</div>
-
 						</div>
-                    </div>
 						{# fin test présentaion des érgonomies #}
 					{% endfor %}
 					{#  présentation des équipements #}
@@ -138,35 +135,35 @@
 									</span>
 								</div>
 							</div>
-						{# gestion des logiciels #}
-						{% if item.equipment.type == 'ordinateur' %}
-							<a class="btn btn-info" data-bs-toggle="collapse" href="#collapseSoftware" aria-expanded="false" aria-controls="collapseSoftware">
-								voir les logiciels disponibles
-							</a>
+							{# gestion des logiciels #}
+							{% if item.equipment.type == 'ordinateur' %}
+								<a class="btn btn-info" data-bs-toggle="collapse" href="#collapseSoftware" aria-expanded="false" aria-controls="collapseSoftware">
+									voir les logiciels disponibles
+								</a>
 
 
-							<div class="collapse" id="collapseSoftware">
-								<div class="card card-body">
+								<div class="collapse" id="collapseSoftware">
+									<div class="card card-body">
 
 
-									{% for software in item.equipment.software %}
+										{% for software in item.equipment.software %}
 
 
-										<span class="position-relative mr10">
-											{{ software.name }}
-											-
-											{{ software.version }}
-										</span>
+											<span class="position-relative mr10">
+												{{ software.name }}
+												-
+												{{ software.version }}
+											</span>
 
-									{% endfor %}
+										{% endfor %}
+									</div>
 								</div>
-							</div>
-							{# fin gestion des logiciels #}
+								{# fin gestion des logiciels #}
 
-							<br><br>
-						{% endif %}
+								<br><br>
+							{% endif %}
 
-					{% endfor %}
+						{% endfor %}
 					</div>
 					{# fin  présentation des équipements #}
 
@@ -175,165 +172,20 @@
 			</div>
 			{# fin partie équipement et ergonomie de la salle #}
 
-		{# partie calendrier #}
+			{# partie calendrier #}
 			<div class="col-lg-6 order-2">
-			<div id="resas" data-list="{{ resEvents|json_encode }}"></div>
-    <!-- début du calendrier -->
-    <div class="container-fluid mb-2 pt-2">
-        <div class="">
-            <div id="calendar1"><!-- Votre calendrier ici --></div>
-            <div>
-                <form action="{{ path('app_reservation_create', {slug: room.slug}, 'reservation') }}" method='post' class="text-center">
-                    <label for="date_start">Reservation pour le :</label>
-                    <input type="date" name="date_start" id="date_start">
-                    <br>
-                    <label for="date_end">Fin de Reservation pour le :</label>
-                    <input type="date" name="date_end" id="date_end">
-                    <br>
-                    <label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
-                    <input type="hidden" name="nombre_jours" id="duration" >
-                    <span name="nombre_jours" id="nombre_jours"></span>
-                    {% for flash_error in app.flashes('errorResa') %}
-                        <div class="alert alert-danger col-4 m-auto mb-5" role="alert">{{ flash_error }}</div>
-                    {% endfor %}
-                    <br>
-                    {% if app.user %}
-                        <input type="submit" name="submit" value="Pré-réserver" id="addToReservationButton" class="btn btn-success">
-                    {% else %}
-                        <p>Vous devez être connecté pour Réserver</p>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+				
+		{% include '_partials/calendar.html.twig' %}
 
-
-				{# fin du calendrier #}
 			</div>
-			{# fin partie calendrier #}
-		</section>
-	</article>
 
 
-	
+			{# fin du calendrier #}
+		</div>
+		{# fin partie calendrier #}
+	</section>
+</article>
 
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-let isStartDateSelected = false;
-let startDate = '';
-const calendarEl = document.getElementById('calendar1');
-const dateStartInput = document.getElementById('date_start');
-const dateEndInput = document.getElementById('date_end');
-const numberOfDaysElement = document.getElementById('nombre_jours');
-const duration = document.getElementById('duration');
-const resas= JSON.parse(document.getElementById("resas").getAttribute("data-list"));
 
-console.log(resas);
-////////////
-// Gestion des réservations placées en événements
-
-// Transformation des réservations en un format compatible avec FullCalendar
-  let events = resas.map(function (resa) {
-	
-
-	//condition pour la couleur de fond des réservations en fonction de la confirmation ou non
-    
-	if(resa.confirmation == true){
-// si la réservation est confirmée
-return {
-      title: 'Réservation', // Titre de l'événement
-      start: resa.start, // Date de début de la réservation
-      end: resa.end,
-	  allDay:true,
-	  display:'background', // Date de fin de la réservation
-	  backgroundColor:'red', // Couleur de fond de l'événement (peut être personnalisée)
-	};
-	}else{
-		// si la réservation n'est pas confirmée
-return {
-      title: 'Réservation', // Titre de l'événement
-      start: resa.start, // Date de début de la réservation
-      end: resa.end,
-	  allDay:true,
-	  display:'background', // détermine le fait que l'événement soit placé en couleur
-	  backgroundColor:'orange', // Couleur de fond de l'événement (peut être personnalisée)
-	};
-	}
-	
-	
-  });
-
-
-function updateNumberOfDays() {
-const dateStart = new Date(startDate);
-const dateEnd = new Date(dateEndInput.value);
-
-let numberOfDays = 0;
-let currentDate = dateStart;
-
-while (currentDate <= dateEnd) { // Vérifier si le jour de la semaine n'est pas un samedi (6) ou un dimanche (0)
-if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
-numberOfDays++;
-}
-
-currentDate.setDate(currentDate.getDate() + 1);
-}
-
-// Afficher le nombre de jours entre les deux dates dans l'élément #nombre_jours
-duration.value = numberOfDays;
-console.log(duration)
-numberOfDaysElement.textContent = numberOfDays;
-}
-
-const calendar = new FullCalendar.Calendar(calendarEl, {
-themeSystem: 'bootstrap5',
-initialView: 'dayGridMonth',
-timeZone: 'Europe/Paris',
-locale: 'fr',
-firstDay: 1,
-selectable: true,
-businessHours: [ // specify an array instead
-  {
-    daysOfWeek: [ 1, 2, 3,4,5 ], //
-  },
-],
-events:events,
-//selectOverlap empêche la sélection de jours déjà réservés pour les éléments placés en background
-selectOverlap: function(event) {
-    return event.rendering === 'background';
-  },
-headerToolbar: {
-left: 'prev,next',
-center: 'title',
-right: 'prevYear,nextYear',
-},
-select: function (info) {
-if (! isStartDateSelected) {
-startDate = info.startStr;
-dateStartInput.value = startDate;
-isStartDateSelected = true;
-} else {
-const endDate = info.startStr;
-dateEndInput.value = endDate;
-isStartDateSelected = false;
-updateNumberOfDays(); // Met à jour le nombre de jours quand date_end est sélectionné
-}
-}
-});
-
-// Écoutez l'événement 'input' pour les champs de date
-dateStartInput.addEventListener('input', function () {
-startDate = dateStartInput.value;
-updateNumberOfDays(); // Met à jour le nombre de jours dès que date_start est modifié
-});
-
-dateEndInput.addEventListener('input', function () {
-updateNumberOfDays(); // Met à jour le nombre de jours dès que date_end est modifié
-});
-
-calendar.render();
-});
-	</script>
 {% endblock %}
