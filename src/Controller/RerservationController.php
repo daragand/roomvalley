@@ -147,7 +147,9 @@ class RerservationController extends AbstractController
 }
 
 
+
 #[Route('/reservation/{id}/delete', name: 'app_reservation_delete', methods: ['POST'])]
+
 
 public function delete(Request $request, Reservation $reservation, EntityManagerInterface $em): Response {
     $em->remove($reservation);
