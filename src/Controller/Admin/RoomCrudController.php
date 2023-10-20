@@ -3,18 +3,24 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Room;
+use App\Entity\ImagesRoom;
 use App\Controller\Admin\AddressCrudController;
 use App\Controller\Admin\ErgonomyCrudController;
+use Doctrine\Common\Collections\ArrayCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use App\Controller\Admin\EquipmentRoomQuantityCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Configurator\ImageConfigurator;
+use Symfony\Component\Form\Extension\Core\DataTransformer\UlidToStringTransformer;
 
 class RoomCrudController extends AbstractCrudController
 {
@@ -45,6 +51,30 @@ class RoomCrudController extends AbstractCrudController
                 ->setIcon('fa-solid fa-mug-saucer')
                 ->setHelp('Saisissez le nom de la salle'),
             TextField::new('name', 'Nom de la salle'),
+
+    //         ImageField::new('imagesRooms', 'Photo de la salle')
+    // ->setBasePath('uploads/')
+    // ->setUploadDir('public/uploads')
+    // ->setFormTypeOptions([
+    //     'by_reference' => false,
+    //     'multiple' => true,
+    //     'empty_data'   => [],
+    //     'required' => true,
+    //     'attr' => ['accept' => 'image/*'],
+    // ])
+    // ->setUploadDir('/public/uploads')
+    // ->setUploadedFileNamePattern('[randomhash].[extension]')
+    // ->setRequired(true)
+    // ->setCustomOption('move', false)
+    // ->setCustomOption('fileName', function (UploadedFile $uploadedFile, array $context) {
+    //      'custom-name.' . $uploadedFile->guessExtension();
+
+    // }),
+
+            FormField::addPanel('Photo de la salle')
+                ->setIcon('fa-solid fa-mug-saucer')
+                ->setHelp('Ajoutez une photo de la salle'),
+                ImageField::new('imagesRooms', 'Photo de la salle'),
 
             FormField::addPanel('Adresse de la salle')
                 ->setIcon('fa-solid fa-location-dot'),

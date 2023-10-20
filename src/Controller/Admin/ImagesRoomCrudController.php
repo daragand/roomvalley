@@ -7,6 +7,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 
 class ImagesRoomCrudController extends AbstractCrudController
 {
@@ -30,12 +32,19 @@ class ImagesRoomCrudController extends AbstractCrudController
             FormField::addPanel('Salle')
                 ->setIcon('fa-brands fa-codepen')
                 ->setHelp('Salle'),
-            TextField::new('room', 'Salle'),
+            AssociationField::new('room', 'Salle'),
 
             FormField::addPanel('Chemin de l\'image')
                 ->setIcon('fa-solid fa-image')
                 ->setHelp('Saisissez le chemin d\'accès pour l\'image'),
-            TextField::new('path', 'Chemin de l\'image'),
+            ImageField::new('path', 'Chemin de l\'image')
+                ->setBasePath('uploads/')
+                ->setUploadDir('public/uploads')
+                ->setFormTypeOptions([
+                    'mapped' => false,
+                    'by_reference' => false,
+                    'multiple' => true,
+                ])
         ];
     }
 }
