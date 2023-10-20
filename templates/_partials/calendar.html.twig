@@ -27,3 +27,11 @@
 						</div>
 					</div>
 				</div>
+
+
+                {% block javascripts %}
+        {# {{ parent() }} #}
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
+		<script src="{{ asset('/calendar/calendarInit.js') }}"></script>
+       
+        {% endblock %}
