@@ -162,7 +162,7 @@
 							id="calendar1"><!-- Votre calendrier ici -->
 						</div>
 						<div>
-							<form action="" method='post' class="text-center">
+							<form action="{{ path('app_reservation_create',{slug: room.slug},'reservation') }}" method='post' class="text-center">
 								<label for="date_start">Reservation pour le :
 								</label>
 								<input type="date" name="date_start" id="date_start">
@@ -172,9 +172,10 @@
 								<input type="date" name="date_end" id="date_end">
 								<br>
 								<label for="nombre_jours">Nombre de Jour(s) Reserver :</label>
+								<input type="hidden" name="nombre_jours"  id="duration" >
 								<span name="nombre_jours" id="nombre_jours"></span>
 								<br>
-								<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" disabled="disabled">
+								<input type="submit" name="submit" value="Valider les Dates" id="addToReservationButton" class="btn btn-success" >
 							</form>
 						</div>
 					</div>
@@ -198,6 +199,7 @@ const calendarEl = document.getElementById('calendar1');
 const dateStartInput = document.getElementById('date_start');
 const dateEndInput = document.getElementById('date_end');
 const numberOfDaysElement = document.getElementById('nombre_jours');
+const duration = document.getElementById('duration');
 
 function updateNumberOfDays() {
 const dateStart = new Date(startDate);
@@ -215,6 +217,8 @@ currentDate.setDate(currentDate.getDate() + 1);
 }
 
 // Afficher le nombre de jours entre les deux dates dans l'élément #nombre_jours
+duration.value = numberOfDays;
+console.log(duration)
 numberOfDaysElement.textContent = numberOfDays;
 }
 

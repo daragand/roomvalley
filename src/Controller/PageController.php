@@ -34,6 +34,9 @@ class PageController extends AbstractController
             'room' => $room,
         ]);
     }
+
+
+
     #[Route('/contact', name: 'contact')]
     public function contact(
         Request $request,
