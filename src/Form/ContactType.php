@@ -13,8 +13,6 @@ class ContactType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
-            ->add('password')
             ->add('firstname')
             ->add('lastname')
             ->add('phone')
