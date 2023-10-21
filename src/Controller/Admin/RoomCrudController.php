@@ -85,9 +85,18 @@ class RoomCrudController extends AbstractCrudController
                 ->setCrudController(AddressCrudController::class),
 
             FormField::addPanel('Capacité de la salle')
-                ->setIcon('fa-solid fa-warehouse')
-                ->setHelp('Saisissez la capacité de la salle'),
-            NumberField::new('capacity', 'Capacité de la salle'),
+                ->setIcon('fa-solid fa-wheelchair')
+                ->setHelp("Choisissez la capacité de la salle"),
+            NumberField::new('capacityMin', 'Capacité minimum de la salle'),
+            NumberField::new('capacity', 'Capacité maximum de la salle'),
+
+
+            FormField::addPanel('Status de la salle')
+            ->setIcon('fa-solid fa-wheelchair')
+            ->setHelp("Choisissez la capacité de la salle"),
+        AssociationField::new('status', 'Status actuel de la salle'),
+       
+
 
             FormField::addPanel('Description de la salle')
                 ->setIcon('fa-solid fa-receipt')
@@ -111,7 +120,9 @@ class RoomCrudController extends AbstractCrudController
             AssociationField::new('ergonomy', 'Choix de l\'ergonomie')
                 ->setCrudController(ErgonomyCrudController::class),
 
-                TextField::new('slug')
+                
+                
+               
         ];
     }
 }
