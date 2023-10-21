@@ -85,14 +85,26 @@ class RoomCrudController extends AbstractCrudController
                 ->setCrudController(AddressCrudController::class),
 
             FormField::addPanel('Capacité de la salle')
-                ->setIcon('fa-solid fa-warehouse')
-                ->setHelp('Saisissez la capacité de la salle'),
-            NumberField::new('capacity', 'Capacité de la salle'),
+                ->setIcon('fa-solid fa-wheelchair')
+                ->setHelp("Choisissez la capacité de la salle"),
+            NumberField::new('capacityMin', 'Capacité minimum de la salle'),
+            NumberField::new('capacity', 'Capacité maximum de la salle'),
+
+
+            FormField::addPanel('Status de la salle')
+            ->setIcon('fa-solid fa-wheelchair')
+            ->setHelp("Choisissez la capacité de la salle"),
+        AssociationField::new('status', 'Status actuel de la salle')
+            ,
+        
+       
+
 
             FormField::addPanel('Description de la salle')
                 ->setIcon('fa-solid fa-receipt')
                 ->setHelp('Écrivez une description'),
-            TextareaField::new('description', 'Description de la salle'),
+            TextareaField::new('description', 'Description de la salle')
+            ->hideOnIndex(),
 
             FormField::addPanel('Prix de la salle')
                 ->setIcon('fa-solid fa-euro-sign')
@@ -103,15 +115,19 @@ class RoomCrudController extends AbstractCrudController
                 ->setIcon('fa-solid fa-toolbox')
                 ->setHelp("Choisissez vos équipements"),
             AssociationField::new('equipmentRoomQuantities', 'Choix de l\'équipements')
-                ->setCrudController(EquipmentRoomQuantityCrudController::class),
+                ->setCrudController(EquipmentRoomQuantityCrudController::class)
+                ->hideOnIndex(),
 
             FormField::addPanel('Choix de l\'ergonomie')
                 ->setIcon('fa-solid fa-wheelchair')
                 ->setHelp("Choisissez l'ergonomie"),
             AssociationField::new('ergonomy', 'Choix de l\'ergonomie')
-                ->setCrudController(ErgonomyCrudController::class),
+                ->setCrudController(ErgonomyCrudController::class)
+                ->hideOnIndex(),
 
-                TextField::new('slug')
+                
+                
+               
         ];
     }
 }
