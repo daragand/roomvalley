@@ -29,10 +29,10 @@ class AddressCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            FormField::addPanel('Adresse de la salle')
+            FormField::addPanel('Adresses')
                 ->setIcon('fa-solid fa-location-dot')
-                ->setHelp('Saisissez l\'adresse de la salle'),
-            TextField::new('Address', 'Adresse de la salle'),
+                ->setHelp('Saisissez l\'adresse'),
+            TextField::new('Address', 'Adresses'),
 
             FormField::addPanel('Code postal')
                 ->setIcon('fa-solid fa-location-pin')

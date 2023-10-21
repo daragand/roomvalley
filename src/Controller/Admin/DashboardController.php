@@ -2,13 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Room;
 use App\Entity\User;
 use App\Entity\Address;
-use App\Entity\Equipment;
 use App\Entity\Ergonomy;
-use App\Entity\Reservation;
-use App\Entity\Room;
 use App\Entity\Software;
+use App\Entity\Equipment;
+use App\Entity\ImagesRoom;
+use App\Entity\Reservation;
 use App\Entity\TypeEquipment;
 use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réservations', 'fa-solid fa-user-tie', Reservation::class);
         yield MenuItem::linkToCrud('Salles', 'fa-brands fa-codepen', Room::class);
         yield MenuItem::linkToCrud('Adresses', 'fa-solid fa-location-dot', Address::class);
+        yield MenuItem::linkToCrud('Images des salles', 'fa-solid fa-images', ImagesRoom::class);
         yield MenuItem::section('Logistiques');
         yield MenuItem::linkToCrud('Équipements', 'fa-solid fa-toolbox', Equipment::class);
         yield MenuItem::linkToCrud("Type d'équipements", 'fa-solid fa-icons', TypeEquipment::class);

@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
             $ergonomyObject = new Ergonomy();
             $ergonomyObject->setName($ergonomy)
                 ->setDescription($faker->text(200))
-                ->setIcon("/images/ergonomy/default.png");
+                ->setIcon($faker->imageUrl(640,480,"ergonomies",true));
                 array_push($ergonomiesObjects, $ergonomyObject);
             $manager->persist($ergonomyObject);
            
@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
             foreach($typeEquipments as $typeEquipment){
                 $typeEquipmentObject=new TypeEquipment();
                 $typeEquipmentObject->setName($typeEquipment)
-                                    ->setIcon("/images/typeEquipment/default.png"); //
+                                    ->setIcon($faker->imageUrl(640,480,"TypeEquipement",true)); //
                 array_push($typeEquipmentObjects,$typeEquipmentObject);
                 $manager->persist($typeEquipmentObject);
               
@@ -146,7 +146,6 @@ class AppFixtures extends Fixture
               
              }
 
-                /////////////
 
                 /**
                  * Gestion des salles.

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Room;
 use Symfony\Component\Mime\Email;
 use App\Repository\RoomRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,26 +15,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PageController extends AbstractController
 {
     #[Route('/', name: 'app_page')]
-    public function index(RoomRepository $roomRepository ): Response
+    public function index(RoomRepository $roomRepository,UserRepository $user ): Response
     {
+       // je veux recuperer le user id de la personne connecté
+        $user = $this->getUser();
+
         $rooms = $roomRepository->findAll();
         return $this->render('page/index.html.twig', [
             'controller_name' => 'PageController',
             'rooms' => $rooms,
             
+            
         ]);
     }
+
 
     #[Route('/room/{slug}', name: 'app_room_show')]
     public function room(
         Room $room,
     ): Response
     {
+        // récupération des réservations liées à la salle pour le calendrier
+        $resList = $room->getReservations();
+
         return $this->render('page/room_show.html.twig', [
             'controller_name' => 'PageController',
             'room' => $room,
+            'reslist' => $resList,
         ]);
     }
+
+
+
     #[Route('/contact', name: 'contact')]
     public function contact(
         Request $request,

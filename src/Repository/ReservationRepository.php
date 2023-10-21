@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Room;
 use App\Entity\Reservation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -21,6 +22,18 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    public function findOverlappingReservations(Room $room, \DateTime $dateStart, \DateTime $dateEnd)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.room = :room')
+            ->andWhere('r.date_start < :dateEnd')
+            ->andWhere('r.date_end > :dateStart')
+            ->setParameter('room', $room)
+            ->setParameter('dateStart', $dateStart)
+            ->setParameter('dateEnd', $dateEnd)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Reservation[] Returns an array of Reservation objects
 //     */
