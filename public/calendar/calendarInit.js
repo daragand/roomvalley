@@ -62,12 +62,18 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(duration);
     numberOfDaysElement.textContent = numberOfDays;
   }
-
+  const today = new Date();
+  
+ 
+  console.log(today)
   const calendar = new FullCalendar.Calendar(calendarEl, {
     themeSystem: "bootstrap5",
     initialView: "dayGridMonth",
     timeZone: "Europe/Paris",
     locale: "fr",
+    validRange: {
+      start: today,
+    },
     firstDay: 1,
     selectable: true,
     businessHours: [
