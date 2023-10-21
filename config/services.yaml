@@ -11,6 +11,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
     App\EventListener\RoomUuidSlugListener:
+        class: App\EventListener\RoomUuidSlugListener
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'App\Entity\Room', event: prePersist }
     # makes classes in src/ available to be used as services
