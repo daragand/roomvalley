@@ -5,12 +5,13 @@ namespace App\Controller\Admin;
 use App\Entity\Equipment;
 use App\Controller\Admin\SoftwareCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use App\Controller\Admin\TypeEquipmentCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class EquipmentCrudController extends AbstractCrudController
 {
@@ -52,6 +53,11 @@ class EquipmentCrudController extends AbstractCrudController
                 ->setIcon('fa-solid fa-n')
                 ->setHelp('Saisissez le nom de l\'équipement'),
             TextField::new('name', 'Nom de l\'équipement'),
+
+            FormField::addPanel('Quantité de l\'équipement')
+                ->setIcon('fa-solid fa-n')
+                ->setHelp('Saisissez la quantité de l\'équipement'),
+            NumberField::new('quantity', 'Nombre de cet équipement'),
 
             FormField::addPanel('Description de l\'équipement')
                 ->setIcon('fa-solid fa-receipt')
