@@ -5,10 +5,9 @@
 {% block body %}
 <div class="col-12">
     <div class="card">
-        <div class="card-body">
+        <div class="card-body ">
             <div class="d-flex align-items-center mb-3">
                 <h3 class="card-title text-dark">Vos reservations</h3>
-                
             </div>
             <div class="table-responsive">
                 <table class="table no-wrap v-middle mb-0">
@@ -57,17 +56,18 @@
                                 </td>
                                 <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
                                     <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-primary">Modifier</a>
-                                    <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
-                                        <form action="{{ path('app_reservation_delete', {'id': reservation.id}) }}" method="POST">
-    <button type="submit" class="btn btn-danger">Supprimer</button>
-</form>
-
-                                    </td>
-
-                                
+                                </td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                    <form action="{{ path('app_reservation_delete', {'id': reservation.id}) }}" method="POST">
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
-                    
+                </table>
+            </div>
+        </div> 
+    </div> 
+</div> 
 {% endblock %}
-                            
