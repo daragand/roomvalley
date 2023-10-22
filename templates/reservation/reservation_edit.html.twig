@@ -1,30 +1,17 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <h1>Modification de votre demande</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="text-center">Modification de votre demande pour : {{ room.name }}</h1>
+        <div><a href="{{ path('app_reservation') }}" class="btn btn-danger">Annuler</a></div>
+    </div>
     
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-
-    <div class="form-group">
-        {{ form_label(form.room) }}
-        {{ form_errors(form.room) }} {# Ajouté pour afficher les erreurs du champ room #}
-        {{ form_widget(form.room) }}
+    {% set resEvents = [] %}
+    {% for item in reslist %}
+        {% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
+        {% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
+    {% endfor %}
+    
+    <div class="col-lg-6 order-2 mx-auto">
+        {% include '_partials/calendar.html.twig' %}
     </div>
-
-    <div class="form-group">
-        {{ form_label(form.date_start) }}
-        {{ form_errors(form.date_start) }} {# Ajouté pour afficher les erreurs du champ date_start #}
-        {{ form_widget(form.date_start) }}
-    </div>
-
-    <div class="form-group">
-        {{ form_label(form.date_end) }}
-        {{ form_errors(form.date_end) }} {# Ajouté pour afficher les erreurs du champ date_end #}
-        {{ form_widget(form.date_end) }}
-    </div>
-
-    <button type="submit" class="btn btn-primary">Confirmer ma Modification</button>
-
-    {{ form_end(form) }}
 {% endblock %}

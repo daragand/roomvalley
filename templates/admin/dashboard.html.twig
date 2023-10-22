@@ -5,117 +5,106 @@
     <!-- *************************************************************** -->
     <!-- Start First Cards -->
     <!-- *************************************************************** -->
-    <div class="row">
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-end">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <div class="d-inline-flex align-items-center">
-                                <h2 class="text-dark mb-1 font-weight-medium">
-                                    {{ reservation|filter(r => r.isConfirmed == 1)|length }}
-                                </h2>
-                            </div>
-                            <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Confirmées</h6>
-                        </div>
-                        <div class="ms-auto mt-md-3 mt-lg-0">
-                            <span class="opacity-7 text-muted">
-                                <i data-feather="user-plus"></i>
-                            </span>
-                        </div>
-                    </div>
+  <div class="row">
+<!-- Card for Confirmed Reservations -->
+<div class="col-sm-6 col-lg-3">
+    <div class="card border-end">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h2 class="text-dark mb-1 font-weight-medium">{{ reservations|filter(r => r.isconfirmed == 1)|length }}</h2>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Confirmées</h6>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-end">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <h2 class="text-dark mb-1 w-100 text-truncate font-weight-medium">{{ reservation|filter(r => r.isConfirmed == 0)|length }}</h2>
-                            <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pre-reservation</h6>
-                        </div>
-                        <div class="ms-auto mt-md-3 mt-lg-0"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-end">
-                <div class="card-body{% set notConfirmedReservations = reservation|filter(r => r.isConfirmed == 0 and r.date_start|date("Y-m-d") <= "now"|date_modify("+5 days") and r.date_start|date("Y-m-d") >= "now") %}{% if notConfirmedReservations|length >= 1 %} bg-danger{% elseif notConfirmedReservations|length == 0 %} bg-success{% endif %}">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <div class="d-inline-flex align-items-center">
-                                <h2 class="text-dark mb-1 font-weight-medium">{{ notConfirmedReservations|length }}</h2>
-                            </div>
-                            <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pre-Reservations Urgente</h6>
-                        </div>
-                        <div class="ms-auto mt-md-3 mt-lg-0">
-                            <span class="opacity-7 text-muted">
-                                <i data-feather="file-plus"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <div class="d-inline-flex align-items-center">
-                                <h2 class="text-dark mb-1 font-weight-medium">{{ reservation|length }}</h2>
-                            </div>
-                            <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Nombres de Reservation Totales</h6>
-                        </div>
-                        <div class="ms-auto mt-md-3 mt-lg-0">
-                            <span class="opacity-7 text-muted">
-                                <i data-feather="globe"></i>
-                            </span>
-                        </div>
-                    </div>
+                <div class="ms-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted">
+                        <i data-feather="user-plus"></i>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Card for Pre-reservations -->
+<div class="col-sm-6 col-lg-3">
+    <div class="card border-end">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h2 class="text-dark mb-1 w-100 text-truncate font-weight-medium">{{ reservations|filter(r => r.isConfirmed == 0)|length }}</h2>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pre-reservation</h6>
+                </div>
+                <div class="ms-auto mt-md-3 mt-lg-0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card for Urgent Pre-Reservations -->
+<div class="col-sm-6 col-lg-3">
+    <div class="card border-end">
+        <div class="card-body{% if urgentReservations|length >= 1 %} bg-danger{% elseif urgentReservations|length == 0 %} bg-success{% endif %}">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h2 class="text-dark mb-1 font-weight-medium">{{ urgentReservations|length }}</h2>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Pre-Reservations Urgente</h6>
+                </div>
+                <div class="ms-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted">
+                        <i data-feather="file-plus"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card for Total Reservations -->
+<div class="col-sm-6 col-lg-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <h2 class="text-dark mb-1 font-weight-medium">{{ reservations|length }}</h2>
+                    <h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">Nombres de Reservation Totales</h6>
+                </div>
+                <div class="ms-auto mt-md-3 mt-lg-0">
+                    <span class="opacity-7 text-muted">
+                        <i data-feather="globe"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
     <div class="row mt-4">
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        {% if notConfirmedReservations|length == 0 %}
-                            <h3 class="card-title text-success">Demande de Pre-Reservation Urgente à traiter 😊 {{ notConfirmedReservations|length }}</h3>
+                        {% if urgentReservations|length == 0 %}
+                            <h3 class="card-title text-success">Demande de Pre-Reservation Urgente à traiter 😊 {{ urgentReservations|length }}</h3>
                         {% else %}
-                            <h3 class="card-title text-danger">Demande de Pre-Reservation Urgente à traiter 😠 {{ notConfirmedReservations|length }}</h3>
+                            <h3 class="card-title text-danger">Demande de Pre-Reservation Urgente à traiter 😠 {{ urgentReservations|length }}</h3>
                         {% endif %}
-                        <div class="ms-auto">
-                            <div class="dropdown sub-dropdown">
-                                <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i data-feather="more-vertical"></i>Actions
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd1">
-                                    <a class="dropdown-item" href="#">Insert</a>
-                                    <a class="dropdown-item" href="#">Update</a>
-                                    <a class="dropdown-item" href="#">Delete</a>
-                                </div>
-                            </div>
-                        </div>
+                 
                     </div>
                     <div class="table-responsive">
                         <table class="table no-wrap v-middle mb-0">
                             <thead>
                                 <tr class="border-0">
-                                    <th class="border-0 font-14 font-weight-medium text-muted">Client :</th>
-                                    <th class="border-0 font-14 font-weight-medium text-muted px-2">Room :</th>
-                                    <th class="border-0 font-14 font-weight-medium text-muted">Date Start :</th>
-                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Date End :</th>
-                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Nombre de jours reservé :</th>
-                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Prix totals :</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted">Client</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted px-2">Room</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted">Date Start</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Date End</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Nombre de jours reservé</th>
+                                    <th class="border-0 font-14 font-weight-medium text-muted text-center">Prix totals</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in notConfirmedReservations|slice(0, 10) %}
+                                {% for item in urgentReservations|slice(0, 10) %}
                                 <tr>
                                     <td class="border-top-0 px-2 py-4">
                                         <div class="d-flex no-block align-items-center">
@@ -152,6 +141,14 @@
                                         {{ item.room.price * days }}
                                     </td>
                                 </tr>
+                       
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <a href="{{ path('admin_reservation_confirm', {'id': item.id}) }}" class="btn btn-success">Confirmer</a>
+                                    <a href="{{ path('admin_reservation_cancel', {'id': item.id}) }}" class="btn btn-danger">Annuler</a>
+                                </td>
+                            </tr>
+                        
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -165,7 +162,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
-                        <h3 class="card-title text-dark">Dernières Reservation Confirmées {{ reservation|filter(r => r.isConfirmed == 1)|length }}</h3>
+                        <h3 class="card-title text-dark">Dernières Reservation Confirmées {{ reservations|filter(r => r.isConfirmed == 1)|length }}</h3>
                         <div class="ms-auto">
                             <div class="dropdown sub-dropdown">
                                 <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dd1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -192,7 +189,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in reservation|filter(r => r.isConfirmed == 1)|slice(0, 10) %}
+                                {% for item in reservations|filter(r => r.isConfirmed == 1)|slice(0, 10) %}
                                 <tr>
                                     <td class="border-top-0 px-2 py-4">
                                         <div class="d-flex no-block align-items-center">
