@@ -1,4 +1,4 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
 
 
@@ -50,10 +50,11 @@
         </form>
 
         <div class="text-center mt-3"> <!-- TODO: add route to sign in -->
-            <p>Not have an account ? <a href="#" class="text-decoration-none">Register here</a></p>
+            <p>Pas de Compte ? <a href="{{ path('app_register') }}" class="text-decoration-none">Inscrivez vous</a></p>
         </div>
         {% endif %}
 
         <p class="mt-5 mb-3 text-body-secondary text-center">&copy; {{ 'now'|date('Y') }}</p>
+        </div>
 </div>
 {% endblock %}
