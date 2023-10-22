@@ -12,25 +12,7 @@
 .nav-item:hover .nav-link {
     color: white; /* Couleur du texte au survol */
 }
-.carousel-control-prev, .carousel-control-next {
-    top: 100%; /* déplace les boutons sous le carrousel */
-    transform: translateY(-50%); /* centrage vertical */
-}
 
-.carousel-control-prev {
-    left: 10%; /* déplace le bouton vers la gauche */
-}
-
-.carousel-control-next {
-    right: 10%; /* déplace le bouton vers la droite */
-}
-h1, h2 {
-    font-family: 'Cooper Black';
-}
-h1 {
-    font-size: 4rem;
-    font-weight: bold;
-}
 .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
 .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 .carousel-inner {
@@ -47,11 +29,6 @@ h1 {
 background-color: black;
 opacity: 0.3;
 }
-.card-hover-shadow:hover {
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
-    transition: box-shadow 0.3s ease;
-}
-
 
 /* Styles ajoutés pour le positionnement des flèches */
 .carousel-control-prev, .carousel-control-next {
