@@ -8,7 +8,7 @@ use Symfony\Component\Uid\Uuid;
 
 class RoomUuidSlugListener
 {
-    public function prePersist(Room $room, LifecycleEventArgs $event)
+    public function __invoke(Room $room, LifecycleEventArgs $event)
     {
         // Générer le slug UUID uniquement si le champ est vide
         if (empty($room->getSlug())) {

@@ -12,13 +12,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchController extends AbstractController
 {
-    #[Route('/search', name: 'app_search', methods: ['GET'])]
+    #[Route('/search', name: 'app_search', methods: ['GET','POST'])]
     public function searchRoom(SearchService $search,RequestStack $request,PaginatorInterface $paginator,): Response
     {
 
         //lancement de la recherche dans le service Search
          
         $searchReq = $search->search();
+
+        
+
+        
+//         $firstEquipment = true;
+// if (!$ergonomies){
+// foreach ($ergonomies as $ergoId) {
+//     $joinType = $firstEquipment ? 'join' : 'orWhere';
+//     $rooms->$joinType('room.ergonomy', 'ergonomy' . $ergoId)
+//         ->andWhere('ergonomy' . $ergoId . '.id = :ergonomyId' . $ergoId)
+//         ->setParameter('ergonomyId' . $ergoId, $ergoId);
+
+//     $firstEquipment = false;
+// }
+//}
 
         //comptage des résultats. Permet de savoir si il y a des résultats ou non et de les afficher dans la vue.
         $nbResults = count($searchReq);
@@ -37,12 +52,16 @@ class SearchController extends AbstractController
          );
          // récupération des critères de recherche complété par l'usager et on les affiche dans la vue.
          $req = $request->getCurrentRequest()->query->get('q');
+            $equmt = $request->getCurrentRequest()->query->get('equipement');
+
+            // dd($equmt);
 
         return $this->render('search/results.html.twig', [
             'name_page' => 'Résultats de recherche',
             'results' => $results,
             'query' => $req,
             'nbResults' => $nbResults,
+            
 
         ]);
     }
