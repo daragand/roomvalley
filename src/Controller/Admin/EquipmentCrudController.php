@@ -40,8 +40,13 @@ class EquipmentCrudController extends AbstractCrudController
             FormField::addPanel('Logiciel de l\'équipement')
                 ->setIcon('fa-solid fa-laptop-code')
                 ->setHelp('Choisissez le logiciel de l\'équipement'),
+
             AssociationField::new('software', 'Logiciel de l\'équipement')
-                ->setCrudController(SoftwareCrudController::class),
+                ->setCrudController(SoftwareCrudController::class)
+                ->setCustomOption('hideOnForm', function (Equipment $equipment) {
+                    return $equipment->getType()->getName() !== 'ordinateur';
+                })
+                ->onlyOnForms(),
 
             FormField::addPanel('Nom de l\'équipement')
                 ->setIcon('fa-solid fa-n')
