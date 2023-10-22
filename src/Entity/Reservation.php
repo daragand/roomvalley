@@ -118,6 +118,12 @@ class Reservation
 
         return $this;
     }
+    public function confirm(): self
+{
+    $this->isConfirmed = true;
+
+    return $this;
+}
     public function __toString(): string
     {
         return $this->date_start. " " . $this->date_end;

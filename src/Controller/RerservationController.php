@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ReservationType;
 use App\Service\DurationService;
 use App\Repository\ReservationRepository;
+use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -132,8 +133,11 @@ class RerservationController extends AbstractController
     }
     
 #[Route('/reservation/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $em): Response
+    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $em,RoomRepository $room): Response
 {
+    // récupération des réservations liées à l'id de la salle pour le calendrier
+    $resList = $reservation->getRoom()->getReservations();
+    $room = $reservation->getRoom();
     $form = $this->createForm(ReservationType::class, $reservation);
     $form->handleRequest($request);
 
@@ -148,6 +152,8 @@ class RerservationController extends AbstractController
     return $this->render('reservation/reservation_edit.html.twig', [
         'reservation' => $reservation,
         'form' => $form->createView(),
+        'reslist' => $resList,
+        'room' => $room,
     ]);
 }
 
