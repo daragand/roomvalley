@@ -30,7 +30,10 @@ class SearchService
 /**
  * q représente la recherche sur la pièce. les autres critères de recherche sont récupérés dans la requête au niveau des filtres.
  */
-        $ergonomy = $request->query->get('ergonomy');
+        $ergonomies = $request->request->get('ergonomy');
+
+
+
         $capacity = $request->query->get('capacity');
         $equipment = $request->query->get('equipment');
 
@@ -43,22 +46,25 @@ class SearchService
          ->createQueryBuilder('room')
          ->join('room.address', 'address')
          ->join('room.status', 'status')
-         ->join('room.ergonomy', 'ergonomy')
         ->join('room.equipmentRoomQuantities', 'equipmentRoomQuantities')
         ->join('equipmentRoomQuantities.equipment', 'equipment')
          ->where('lower(room.name) LIKE lower(:search) OR lower(room.description) LIKE lower(:search)')
          ->setParameter('search', '%' . $query . '%')
-         ->orderBy('room.name', 'ASC')
-         ->getQuery()
-         ->getResult();
-         ;
-
-         if ($ergonomy) {
-            $rooms = array_filter($rooms, function ($room) use ($ergonomy) {
-                return $room->getErgonomy()->contains($ergonomy);
-            });
-        }
+         ->orderBy('room.name', 'ASC');
          
+
+
+         //filtrage en fonction des filtres renseignées sous forme conditionnelles. 
+
+        //  $selectedEquipments = /* Tableau d'ID d'équipements sélectionnés par l'utilisateur */;
+
+         
+
+         
+        // Filtrage en fonction des équipements si des critères ont été sélectionnés
+// 
+         
+$rooms = $rooms->getQuery()->getResult();
 
          return [
              'rooms' => $rooms,
