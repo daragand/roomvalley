@@ -13,6 +13,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use Doctrine\ORM\EntityManagerInterface;
 
+
 class ImagesRoomCrudController extends AbstractCrudController
 {
     private $entityManager;
@@ -23,79 +24,83 @@ class ImagesRoomCrudController extends AbstractCrudController
         $this->entityManager = $entityManager;
         $this->requestStack = $requestStack;
     }
+
+    // Définit l'entité gérée par ce contrôleur
     public static function getEntityFqcn(): string
     {
         return ImagesRoom::class;
     }
 
-    
+    // Configure le comportement global du CRUD pour cette entité
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setEntityLabelInPlural('Images room')
             ->setEntityLabelInSingular('Image room')
-            ->setPageTitle('index', "Gestion d'images des salles")
-            ;
+            ->setPageTitle('index', "Gestion d'images des salles");
     }
+
+    // Personnalise le processus de persistance de l'entité
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         // Si l'entité est une instance de ImagesRoom et qu'elle n'a pas encore de salle associée
         if ($entityInstance instanceof ImagesRoom && !$entityInstance->getRoom()) {
-            // Récupérez l'ID de la salle à partir des paramètres de requête
+            // Récupère l'ID de la salle à partir des paramètres de requête
             $roomId = $this->request->query->get('roomId');
 
             if ($roomId) {
-                // Récupérez la salle correspondante depuis la base de données
+                // Récupère la salle correspondante depuis la base de données
                 $room = $entityManager->getRepository(Room::class)->find($roomId);
 
                 if ($room) {
-                    // Associez la salle à l'entité ImagesRoom
+                    // Associe la salle à l'entité ImagesRoom
                     $entityInstance->setRoom($room);
                 }
             }
         }
 
-        // Poursuivez la persistance de l'entité
+        // Poursuit la persistance de l'entité
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-   
-
-  
-
-
+    // Configure les champs du formulaire d'édition et de création
     public function configureFields(string $pageName): iterable
-{
-    $request = $this->requestStack->getCurrentRequest();
-    $roomId = $request->query->get('roomId');
-    
-    if ($roomId) {
-        $room = $this->entityManager->getRepository(Room::class)->find($roomId);
-    }
-    
-    $fields = [
-        FormField::addPanel('Salle')
-            ->setIcon('fa-brands fa-codepen')
-            ->setHelp('Salle'),
-        
-        // Ici, vous configurez le champ de l'association avec l'entité Room récupérée (si elle existe)
-        AssociationField::new('room', 'Salle')
-            ->setValue($room)
-            ->setFormTypeOptions(['disabled' => (bool) $room]), // Disable the field if room is set
+    {
+        // Récupère l'ID de la salle depuis les paramètres de requête (ou utilise l'ID de la dernière salle créée s'il n'est pas présent)
+        $request = $this->requestStack->getCurrentRequest();
+        $roomId = $request->query->get('roomId');
 
-        FormField::addPanel('Chemin de l\'image')
-            ->setIcon('fa-solid fa-image')
-            ->setHelp('Saisissez le chemin d\'accès pour l\'image'),
+        if ($roomId) {
+            $room = $this->entityManager->getRepository(Room::class)->find($roomId);
+        } else {
+            $room = $this->entityManager->getRepository(Room::class)->findOneBy([], ['id' => 'DESC']);
+        }
+
+        $fields = [
+            // Champ "Salle" configuré avec PanelField et icône
+            FormField::addPanel('Salle')
+                ->setIcon('fa-brands fa-codepen')
+                ->setHelp('Salle'),
+
+            // Champ d'association "Salle" configuré pour afficher la salle sélectionnée ou la dernière salle créée
+            AssociationField::new('room', 'Salle')
+                ->setValue($room),
+
+            // Champ "Chemin de l'image" configuré de la même manière que le champ "Salle" mais avec une icône différente
+            FormField::addPanel('Chemin de l\'image')
+                ->setIcon('fa-solid fa-image')
+                ->setHelp('Saisissez le chemin d\'accès pour l\'image'),
+
+            // Champ "Image" de type ImageField pour gérer les téléchargements d'images
             ImageField::new('path', 'Image')
-            ->setBasePath('uploads/')
-            ->setUploadDir('public/uploads/')
-            ->setUploadedFileNamePattern(
-            fn (UploadedFile $file): string => sprintf('%s-%s', time(), $file->getClientOriginalName())
-        )
-        ->setRequired(true),
-    ];
-    
-    return $fields;
-}
+                ->setBasePath('uploads/')
+                ->setUploadDir('public/uploads/')
+                ->setUploadedFileNamePattern(
+                    fn (UploadedFile $file): string => sprintf('%s-%s', time(), $file->getClientOriginalName())
+                )
+                ->setRequired(true),
+        ];
 
+        return $fields;
+    }
 }
