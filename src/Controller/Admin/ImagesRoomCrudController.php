@@ -58,10 +58,24 @@ class ImagesRoomCrudController extends AbstractCrudController
                 }
             }
         }
+        if ($entityInstance instanceof ImagesRoom) {
+        $file = $entityInstance->getPath(); // Supposons que 'getPath' renvoie l'objet UploadedFile
+
+        if ($file instanceof UploadedFile) {
+            $fileName = sprintf('%s-%s', time(), $file->getClientOriginalName());
+
+            // Mettez à jour l'attribut 'path' pour inclure le dossier de destination
+            $entityInstance->setPath('uploads/' . $fileName);
+        }
+
+        // ... [Votre code précédent pour associer la salle]
+    }
 
         // Poursuit la persistance de l'entité
         parent::persistEntity($entityManager, $entityInstance);
     }
+
+
 
     // Configure les champs du formulaire d'édition et de création
     public function configureFields(string $pageName): iterable
