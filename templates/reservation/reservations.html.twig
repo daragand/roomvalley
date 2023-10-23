@@ -1,20 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RerservationController!{% endblock %}
+{% block title %}Vos reservations{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/symfony/ECF2/roomvalley/src/Controller/RerservationController.php'|file_link(0) }}">src/Controller/RerservationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/symfony/ECF2/roomvalley/templates/rerservation/index.html.twig'|file_link(0) }}">templates/rerservation/index.html.twig</a></code></li>
-    </ul>
-</div>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body ">
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="card-title text-dark">Vos reservations</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap v-middle mb-0">
+                    <thead>
+                        <tr class="border-0">
+                            <th class="border-0 font-14 font-weight-medium text-muted px-2">Room :</th>
+                            <th class="border-0 font-14 font-weight-medium text-muted">Date Start :</th>
+                            <th class="border-0 font-14 font-weight-medium text-muted text-center">Date End :</th>
+                            <th class="border-0 font-14 font-weight-medium text-muted text-center">Nombre de jours reservé :</th>
+                            <th class="border-0 font-14 font-weight-medium text-muted text-center">Prix totals :</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in user.reservations %}
+                            <tr>
+                                <td class="border-top-0 px-2 py-4">
+                                    <div class="d-flex no-block align-items-center">
+                                        <div>
+                                            <h5 class="text-dark mb-0 font-16 font-weight-medium">
+                                                {{ reservation.room.name }}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="border-top-0 px-2 py-4">
+                                    {{ reservation.date_start|date('d/m/Y') }}
+                                </td>
+                                <td class="border-top-0 text-center px-2 py-4">
+                                    {{ reservation.date_end|date('d/m/Y') }}
+                                </td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                    {% set start = reservation.date_start %}
+                                    {% set end = reservation.date_end %}
+                                    {% set days = date(start).diff(date(end)).days %}
+                                    {% set weekends = 0 %}
+                                    {% for i in 0..days %}
+                                        {% set day = date(start).modify('+' ~ i ~ 'day') %}
+                                        {% if day.format('N') not in ['6', '7'] %}
+                                            {% set weekends = weekends + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {{ days }}
+                                </td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                    {{ reservation.room.price * days }}
+                                </td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-primary">Modifier</a>
+                                </td>
+                                <td class="border-top-0 text-center font-weight-medium text-muted px-2 py-4">
+                                    <form action="{{ path('app_reservation_delete', {'id': reservation.id}) }}" method="POST">
+                                        <button type="submit" class="btn btn-danger">Annuler</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div> 
+    </div> 
+</div> 
 {% endblock %}

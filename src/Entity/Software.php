@@ -22,7 +22,8 @@ class Software
     private ?string $version = null;
 
     #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'software')]
-    private Collection $equipment;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Collection $equipment=null;
 
     public function __construct()
     {

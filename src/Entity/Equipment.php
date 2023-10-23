@@ -24,6 +24,7 @@ class Equipment
 
 
     #[ORM\ManyToMany(targetEntity: Software::class, inversedBy: 'equipment')]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $software;
 
     #[ORM\ManyToOne(inversedBy: 'equipment')]
@@ -83,7 +84,7 @@ class Equipment
         return $this->software;
     }
 
-    public function addSoftware(Software $software): static
+    public function addSoftware(?Software $software): static
     {
         if (!$this->software->contains($software)) {
             $this->software->add($software);
