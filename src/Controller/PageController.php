@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Room;
+use App\Form\ContactType;
 use Symfony\Component\Mime\Email;
 use App\Repository\RoomRepository;
 use App\Repository\UserRepository;
