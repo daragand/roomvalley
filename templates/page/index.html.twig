@@ -45,7 +45,12 @@
                 {% endif %}
                             <div class="col-md-3">
                                 <div class="card mb-4 card-hover-shadow flex-grow-1">
+                                {% if room.imagesRooms[0] %}
+                                    
                                     <img src="{{ room.imagesRooms[0] }}" class="card-img-top" alt="...">
+                                {% else %}
+                                <img src="https://via.placeholder.com/640x480.png/002222?text=Imagedefaut" class="card-img-top" alt="...">
+                                {% endif %}
                                     <div class="card-body">
                                         <h5 class="card-title">{{ room.name }}</h5>
                                         <p class="card-text">{{ room.description|slice(0, 80) }}...</p>
