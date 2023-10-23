@@ -58,17 +58,17 @@ class SearchService
 
          $firstEquipment = true;
 //tests pour équipements. 
-         foreach ($equipments as $equipment) {
+        //  foreach ($equipments as $equipment) {
 
-            //ternaire pour faire un join au départ et un orWhere ensuite.
-             $joinType = $firstEquipment ? 'join' : 'orWhere';
-             //liason avec la table equipmentRoomQuantities et les équipements
-             $rooms->$joinType('equipmentRoomQuantities.equipment', 'equipement')
-                 ->andWhere('equipement.name = :equipment')
-                 ->setParameter('equipment',  $equipment);
-         //après la première boucle, on passe sur les ORWHERE
-             $firstEquipment = false;
-         }
+        //     //ternaire pour faire un join au départ et un orWhere ensuite.
+        //      $joinType = $firstEquipment ? 'join' : 'orWhere';
+        //      //liason avec la table equipmentRoomQuantities et les équipements
+        //      $rooms->$joinType('equipmentRoomQuantities.equipment', 'equipement')
+        //          ->andWhere('equipement.name = :equipment')
+        //          ->setParameter('equipment',  $equipment);
+        //  //après la première boucle, on passe sur les ORWHERE
+        //      $firstEquipment = false;
+        //  }
 
          
 
