@@ -54,7 +54,11 @@
                 {% endif %}
                             <div class="col-md-3">
                                 <div class="card mb-4 card-hover-shadow flex-grow-1">
-                                    <img src="{{ room.imagesRooms[0] }}" class="card-img-top" alt="...">
+                                    {% if room.imagesRooms[0]|slice(0, 4) != 'http' %}
+                                        <img src="{{ asset('/uploads/' ~ room.imagesRooms[0]) }}" class="card-img-top" alt="...">
+                                    {% else %}
+                                        <img src="{{ room.imagesRooms[0] }}" class="card-img-top" alt="...">
+                                    {% endif %}
                                     <div class="card-body">
                                         <h5 class="card-title">{{ room.name }}</h5>
                                         <p class="card-text">{{ room.description|slice(0, 80) }}...</p>
