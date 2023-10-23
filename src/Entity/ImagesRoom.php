@@ -30,9 +30,8 @@ class ImagesRoom
         return $this->path;
     }
 
-    public function setPath( $path): static
-    {
-        dump($path);
+    public function setPath(string $path): static
+    {  
         $this->path = $path;
 
         return $this;
