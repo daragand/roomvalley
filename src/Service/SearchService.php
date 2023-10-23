@@ -35,7 +35,7 @@ class SearchService
 
 
         $capacity = $request->query->get('capacity');
-        $equipment = $request->query->get('equipment');
+        $equipments = $request->query->get('equipment');
 
         /**
          * Recherche dans les titres de produits via le QueryBuilder. Le tri s'effectue par le titre, puis la catégories.
@@ -56,7 +56,19 @@ class SearchService
 
          //filtrage en fonction des filtres renseignées sous forme conditionnelles. 
 
-        //  $selectedEquipments = /* Tableau d'ID d'équipements sélectionnés par l'utilisateur */;
+         $firstEquipment = true;
+//tests pour équipements. 
+         foreach ($equipments as $equipment) {
+
+            //ternaire pour faire un join au départ et un orWhere ensuite.
+             $joinType = $firstEquipment ? 'join' : 'orWhere';
+             //liason avec la table equipmentRoomQuantities et les équipements
+             $rooms->$joinType('equipmentRoomQuantities.equipment', 'equipement')
+                 ->andWhere('equipement.name = :equipment')
+                 ->setParameter('equipment',  $equipment);
+         //après la première boucle, on passe sur les ORWHERE
+             $firstEquipment = false;
+         }
 
          
 
