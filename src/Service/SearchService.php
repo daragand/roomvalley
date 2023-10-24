@@ -38,8 +38,7 @@ class SearchService
         $equipments = $request->query->get('equipment');
 
         /**
-         * Recherche dans les titres de produits via le QueryBuilder. Le tri s'effectue par le titre, puis la catégories.
-         * Les titres sont placés en minuscule ainsi que le critères pour éviter les erreurs de casse.Cela permet de faire une recherche insensible à la casse. Il faut ajouter le lower() pour chaque critère de recherche.          
+         * Recherche dans les titres de salles, d'ergonomies, de types d'équipements et de descriptions de salles. 
          * */
         
          $rooms = $this->em->getRepository(Room::class)
