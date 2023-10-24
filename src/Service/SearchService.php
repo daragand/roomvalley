@@ -48,7 +48,9 @@ class SearchService
          ->join('room.status', 'status')
         ->join('room.equipmentRoomQuantities', 'equipmentRoomQuantities')
         ->join('equipmentRoomQuantities.equipment', 'equipment')
-         ->where('lower(room.name) LIKE lower(:search) OR lower(room.description) LIKE lower(:search)')
+        ->join('room.ergonomy', 'ergonomy')
+        ->join('equipment.type', 'typeEquipment')
+         ->where('lower(room.name) LIKE lower(:search) OR lower(room.description) LIKE lower(:search) OR lower(typeEquipment.name) LIKE lower(:search) OR lower(ergonomy.name) LIKE lower(:search)')
          ->setParameter('search', '%' . $query . '%')
          ->orderBy('room.name', 'ASC');
          
