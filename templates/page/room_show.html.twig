@@ -46,7 +46,11 @@
 					<div class="carousel-inner">
 						{% for image in room.imagesRooms %}
 							<div class="carousel-item active">
-								<img src={{ image.path }} class="d-block w-100">
+								{% if image.path starts with 'http' %}
+									<img src="{{ image.path }}" class="d-block w-100">
+								{% else %}
+									<img src="{{ asset('/uploads/' ~ image.path) }}" class="d-block w-100">
+								{% endif %}
 							</div>
 						{% endfor %}
 					</div>
