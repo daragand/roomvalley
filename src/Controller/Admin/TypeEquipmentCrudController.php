@@ -6,6 +6,8 @@ use App\Entity\TypeEquipment;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class TypeEquipmentCrudController extends AbstractCrudController
@@ -35,7 +37,25 @@ class TypeEquipmentCrudController extends AbstractCrudController
             FormField::addPanel('Choix de l\'icône')
                 ->setIcon('fa-solid fa-i')
                 ->setHelp('Choisissez un icône'),
-            TextField::new('icon', 'Choix de l\icône'),
+                 // TextField::new('icon', 'Choix de l\'icône')
+            ImageField::new('icon', 'Photo de la salle')
+            ->setBasePath('typeEquipment/')
+            ->setUploadDir('public/uploads/typeEquipment')
+            ->setFormTypeOptions([
+                'mapped' => false,
+                'multiple' => true,
+                'empty_data'   => [],
+                'required' => true,
+                'attr' => ['accept' => 'image/*'],
+            ])
+            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->setRequired(true)
+            ->setCustomOption('move', false)
+            ->setCustomOption('fileName', function (UploadedFile $uploadedFile, array $context) {
+                 'custom-name.' . $uploadedFile->guessExtension();
+        
+            })
+            ->onlyOnForms(),
         ];
     }
 }

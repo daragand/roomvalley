@@ -26,6 +26,7 @@
         "symfony/http-client": "6.3.*",
         "symfony/intl": "6.3.*",
         "symfony/mailer": "6.3.*",
+        "symfony/messenger": "6.3.*",
         "symfony/mime": "6.3.*",
         "symfony/monolog-bundle": "^3.0",
         "symfony/notifier": "6.3.*",
@@ -103,6 +104,7 @@
         "symfony/maker-bundle": "^1.51",
         "symfony/phpunit-bridge": "^6.3",
         "symfony/stopwatch": "6.3.*",
+        "symfony/var-dumper": "6.3.*",
         "symfony/web-profiler-bundle": "6.3.*"
     }
 }

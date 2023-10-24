@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="text-center">Modification de votre demande pour : {{ room.name }}</h1>
+        <div><a href="{{ path('app_reservation') }}" class="btn btn-danger">Annuler</a></div>
+    </div>
+    
+    {% set resEvents = [] %}
+    {% for item in reslist %}
+        {% set itemEnd = item.date_end|date('Y-m-d 23:59:59') %}
+        {% set resEvents = resEvents|merge({(item.id): {'title': 'Réservation', 'start': item.date_start|date('Y-m-d H:i:s'), 'end': itemEnd, 'confirmation':item.isConfirmed }}) %}
+    {% endfor %}
+    
+    <div class="col-lg-6 order-2 mx-auto">
+        {% include '_partials/calendar.html.twig' %}
+    </div>
+{% endblock %}

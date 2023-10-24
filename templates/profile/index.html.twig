@@ -3,7 +3,7 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-{% for user in users|filter(user => user.id == app.user) %}
+{% for user in users|filter(user => user.id == app.user.id) %}
 <section style="background-color: #eee;">
     <h1 class="container py-4">Profil</h1>
     <div class="container py-5">
@@ -16,8 +16,8 @@
                             class="rounded-circle img-fluid" style="width: 150px;">
                                 <h5 class="my-3">{{ user.lastname }}.{{ user.firstname }}</h5>
                                 <div class="d-flex justify-content-center mb-2">
-                                    <a class="btn btn-primary" href="{{ path('app_profile_edit', {'id': user.id}) }}">Éditer</a>
-                                    <a class="btn btn-danger" href="{{ path('app_profile_delete', {'id': user.id}) }}">Supprimer</a>
+                                    <a class="btn btn-primary" href={{ path('app_profile_edit', {'id': user.id}) }}>Éditer</a>
+                                    <a class="btn btn-danger" href={{ path('app_profile_delete', {'id': user.id}) }}>Supprimer</a>
                                 </div>
                     </div>
                 </div>

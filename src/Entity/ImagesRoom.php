@@ -31,7 +31,7 @@ class ImagesRoom
     }
 
     public function setPath(string $path): static
-    {
+    {  
         $this->path = $path;
 
         return $this;
@@ -47,6 +47,14 @@ class ImagesRoom
         $this->room = $room;
 
         return $this;
+    }
+    //fonction pour vérifier que le chemin de l'image n'est pas vide
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        if ($this->path === null) {
+            throw new \Exception('Le chemin de l\'image ne peut pas être vide.');
+        }
     }
     public function __toString(): string
     {

@@ -36,12 +36,12 @@ class ReservationCrudController extends AbstractCrudController
             FormField::addPanel('Nom de l\'utilisateur')
                 ->setIcon('fa-solid fa-user')
                 ->setHelp('Saisissez le nom de l\'utilisateur'),
-            TextField::new('users', 'Nom de l\'utilisateur'),
+            AssociationField::new('users', 'Nom de l\'utilisateur'),
 
             FormField::addPanel('Nom de la salle')
                 ->setIcon('fa-solid fa-mug-saucer')
                 ->setHelp('Saisissez le nom de la salle'),
-            TextField::new('room', 'Nom de la salle'),
+             AssociationField::new('room', 'Nom de la salle'),
 
             FormField::addPanel('Date de début')
                 ->setIcon('fa-solid fa-calendar-days')
